@@ -106,101 +106,90 @@ function KellyBeltIcon() {
 }
 
 function BirkinIcon() {
-  // THE Birkin — trapezoidal silhouette, flap, lock, handles
+  // THE Birkin — clean trapezoid, paired handles, gold turnlock
   return (
     <svg width="52" height="52" viewBox="0 0 52 52" fill="none">
-      {/* Bag body — trapezoid */}
-      <path d="M6 48 L6 22 Q6 18 10 18 L42 18 Q46 18 46 22 L46 48 Z"
+      {/* Bag body — trapezoid wider at bottom */}
+      <path d="M7 50 L7 21 Q7 17 11 17 L41 17 Q45 17 45 21 L45 50 Z"
             fill="#e8601c" stroke="#1a1a1a" strokeWidth="2.2" />
-      {/* Flap — folds over top */}
-      <path d="M6 22 Q6 14 10 12 L42 12 Q46 14 46 22"
-            fill="#d4561a" stroke="#1a1a1a" strokeWidth="2" />
-      {/* Bottom gusset */}
-      <rect x="6" y="44" width="40" height="4" rx="1"
-            fill="#c44c16" stroke="#1a1a1a" strokeWidth="1.5" />
-      {/* Handles — paired */}
-      <path d="M16 18 Q14 10 18 8 Q20 7 22 8 Q24 10 22 18"
+      {/* Flap shadow line */}
+      <path d="M7 21 Q26 27 45 21" fill="none" stroke="#c44e14" strokeWidth="1.5" />
+      {/* Bottom leather strip */}
+      <rect x="7" y="46" width="38" height="4" rx="1"
+            fill="#c44e14" stroke="#1a1a1a" strokeWidth="1.5" />
+      {/* Left handle */}
+      <path d="M15 17 Q13 7 17 5 Q20 4 21 7 Q22 11 20 17"
             stroke="#1a1a1a" strokeWidth="2.2" fill="none" strokeLinecap="round" />
-      <path d="M30 18 Q28 10 30 8 Q32 7 34 8 Q36 10 36 18"
+      {/* Right handle */}
+      <path d="M32 17 Q30 7 31 5 Q34 4 37 7 Q39 11 37 17"
             stroke="#1a1a1a" strokeWidth="2.2" fill="none" strokeLinecap="round" />
-      {/* Turnlock clasp — center */}
-      <rect x="22" y="20" width="8" height="6" rx="1"
-            fill="#b8a06a" stroke="#1a1a1a" strokeWidth="1.5" />
-      <rect x="24.5" y="22" width="3" height="2" rx="0.5" fill="#1a1a1a" opacity="0.4" />
-      {/* Strap — short closure */}
-      <rect x="23" y="14" width="6" height="8" rx="1"
-            fill="#d4561a" stroke="#1a1a1a" strokeWidth="1.2" />
-      {/* Side feet */}
-      <circle cx="10" cy="48" r="1.5" fill="#b8a06a" stroke="#1a1a1a" strokeWidth="1" />
-      <circle cx="42" cy="48" r="1.5" fill="#b8a06a" stroke="#1a1a1a" strokeWidth="1" />
+      {/* Turnlock — gold rect, centered */}
+      <rect x="21" y="19" width="10" height="7" rx="1"
+            fill="#D4AF6A" stroke="#1a1a1a" strokeWidth="1.8" />
+      <rect x="23.5" y="21" width="5" height="3" rx="0.5" fill="#1a1a1a" opacity="0.4" />
+      {/* Corner feet */}
+      <circle cx="10" cy="50" r="1.5" fill="#D4AF6A" stroke="#1a1a1a" strokeWidth="1" />
+      <circle cx="42" cy="50" r="1.5" fill="#D4AF6A" stroke="#1a1a1a" strokeWidth="1" />
       {/* Shine */}
-      <path d="M10 26 Q14 22 20 22" stroke="white" strokeWidth="1.5" opacity="0.35" strokeLinecap="round" />
+      <path d="M10 27 Q15 22 22 23" stroke="white" strokeWidth="1.4" opacity="0.3" strokeLinecap="round" />
     </svg>
   );
 }
 
 function KellyIcon() {
-  // The Kelly — more structured, rigid trapezoid with fold-over flap and single handle
+  // The Kelly — structured rectangular body, single arched handle, prominent gold oval clasp
   return (
     <svg width="52" height="52" viewBox="0 0 52 52" fill="none">
-      {/* Bag body — more square than Birkin */}
-      <rect x="7" y="22" width="38" height="26" rx="2"
+      {/* Bag body */}
+      <rect x="7" y="24" width="38" height="24" rx="1"
             fill="#2a2a2a" stroke="#1a1a1a" strokeWidth="2.2" />
-      {/* Flap — structured fold-over */}
-      <path d="M7 22 L7 14 Q7 10 12 10 L40 10 Q45 10 45 14 L45 22"
-            fill="#1a1a1a" stroke="#1a1a1a" strokeWidth="2" />
-      {/* Flap curved bottom edge */}
-      <path d="M7 22 Q26 28 45 22" fill="#1a1a1a" stroke="#1a1a1a" strokeWidth="1" />
-      {/* Single top handle — the Kelly's signature */}
-      <path d="M18 22 Q18 12 26 10 Q34 12 34 22"
-            stroke="#1a1a1a" strokeWidth="2.5" fill="none" strokeLinecap="round" />
-      {/* Turnlock clasp */}
-      <ellipse cx="26" cy="24" rx="5" ry="4"
-               fill="#b8a06a" stroke="#1a1a1a" strokeWidth="1.8" />
-      <ellipse cx="26" cy="24" rx="2" ry="1.5"
-               fill="#1a1a1a" opacity="0.4" />
-      {/* Strap */}
-      <rect x="23" y="14" width="6" height="10" rx="1"
-            fill="#1a1a1a" stroke="#3a3a3a" strokeWidth="1" />
+      {/* Structured flap */}
+      <path d="M7 24 L7 13 Q7 9 12 9 L40 9 Q45 9 45 13 L45 24 Q26 31 7 24 Z"
+            fill="#1c1c1c" stroke="#1a1a1a" strokeWidth="2" />
+      {/* Single centered handle — Kelly's signature */}
+      <path d="M18 24 Q17 12 26 10 Q35 12 34 24"
+            stroke="#3a3a3a" strokeWidth="3.5" fill="none" strokeLinecap="round" />
+      <path d="M18 24 Q17 12 26 10 Q35 12 34 24"
+            stroke="#1a1a1a" strokeWidth="2.2" fill="none" strokeLinecap="round" />
+      {/* Gold oval turnlock — prominent */}
+      <ellipse cx="26" cy="26" rx="7" ry="5.5"
+               fill="#D4AF6A" stroke="#1a1a1a" strokeWidth="2" />
+      <ellipse cx="26" cy="26" rx="3" ry="2.2"
+               fill="#1a1a1a" opacity="0.45" />
       {/* Corner hardware */}
-      <circle cx="10" cy="46" r="2" fill="#b8a06a" stroke="#1a1a1a" strokeWidth="1" />
-      <circle cx="42" cy="46" r="2" fill="#b8a06a" stroke="#1a1a1a" strokeWidth="1" />
-      <circle cx="10" cy="24" r="2" fill="#b8a06a" stroke="#1a1a1a" strokeWidth="1" />
-      <circle cx="42" cy="24" r="2" fill="#b8a06a" stroke="#1a1a1a" strokeWidth="1" />
-      {/* Stitching */}
-      <rect x="10" y="25" width="32" height="20" rx="1"
-            fill="none" stroke="#3a3a3a" strokeWidth="0.8" strokeDasharray="2 2" />
+      <circle cx="10" cy="46" r="2" fill="#D4AF6A" stroke="#1a1a1a" strokeWidth="1" />
+      <circle cx="42" cy="46" r="2" fill="#D4AF6A" stroke="#1a1a1a" strokeWidth="1" />
+      {/* Interior stitching */}
+      <rect x="11" y="30" width="30" height="15" rx="0"
+            fill="none" stroke="#3a3a3a" strokeWidth="0.7" strokeDasharray="2.5 2" />
       {/* Shine */}
-      <path d="M11 28 Q16 24 22 25" stroke="white" strokeWidth="1.2" opacity="0.3" strokeLinecap="round" />
+      <path d="M11 30 Q17 26 23 27" stroke="white" strokeWidth="1.2" opacity="0.25" strokeLinecap="round" />
     </svg>
   );
 }
 
 function ConstanceIcon() {
-  // The Constance — compact crossbody, the iconic H clasp front and center
+  // The Constance — compact square crossbody, H clasp front and center
   return (
     <svg width="52" height="52" viewBox="0 0 52 52" fill="none">
-      {/* Bag body — compact square */}
-      <rect x="10" y="18" width="32" height="28" rx="3"
-            fill="#8b6914" stroke="#1a1a1a" strokeWidth="2.2" />
-      {/* Shoulder strap — long, thin */}
-      <path d="M10 24 Q4 18 6 10 Q8 4 14 6 Q18 8 16 16"
-            stroke="#1a1a1a" strokeWidth="2" fill="none" strokeLinecap="round" />
-      {/* Flap — top half of bag face */}
-      <rect x="10" y="18" width="32" height="16" rx="3"
-            fill="#7a5c10" stroke="#1a1a1a" strokeWidth="1.5" />
-      {/* THE H CLASP — signature, front center, prominent */}
-      <rect x="20" y="29" width="12" height="10" rx="1"
-            fill="#b8a06a" stroke="#1a1a1a" strokeWidth="2" />
-      {/* H shape */}
-      <rect x="21.5" y="30.5" width="2.5" height="7" fill="#1a1a1a" />
-      <rect x="28" y="30.5" width="2.5" height="7" fill="#1a1a1a" />
-      <rect x="21.5" y="33.5" width="9" height="2" fill="#1a1a1a" />
-      {/* Gusset sides */}
-      <line x1="10" y1="34" x2="10" y2="46" stroke="#6a4e0e" strokeWidth="1.5" />
-      <line x1="42" y1="34" x2="42" y2="46" stroke="#6a4e0e" strokeWidth="1.5" />
+      {/* Bag body */}
+      <rect x="9" y="18" width="34" height="30" rx="2"
+            fill="#b8820a" stroke="#1a1a1a" strokeWidth="2.2" />
+      {/* Flap — top portion, slightly darker */}
+      <rect x="9" y="18" width="34" height="16" rx="2"
+            fill="#9a6e08" stroke="#1a1a1a" strokeWidth="2" />
+      {/* Crossbody strap — arching from left side */}
+      <path d="M9 28 Q2 22 4 12 Q6 5 13 7 Q18 9 16 18"
+            stroke="#1a1a1a" strokeWidth="2.2" fill="none" strokeLinecap="round" />
+      {/* THE H CLASP — gold, front and center, prominent */}
+      <rect x="19" y="29" width="14" height="12" rx="1"
+            fill="#D4AF6A" stroke="#1a1a1a" strokeWidth="2" />
+      {/* H shape cutout */}
+      <rect x="21" y="31" width="3" height="8" fill="#1a1a1a" />
+      <rect x="28" y="31" width="3" height="8" fill="#1a1a1a" />
+      <rect x="21" y="34.5" width="10" height="2.5" fill="#1a1a1a" />
       {/* Shine */}
-      <path d="M13 22 Q18 20 24 21" stroke="white" strokeWidth="1.2" opacity="0.35" strokeLinecap="round" />
+      <path d="M12 22 Q18 19 25 20" stroke="white" strokeWidth="1.2" opacity="0.3" strokeLinecap="round" />
     </svg>
   );
 }
@@ -239,9 +228,9 @@ export default function ShelfInventory({ inventory, lastAcquired }) {
       <div className="shelf-surface">
         {/* Shelf plank SVG background */}
         <svg className="shelf-plank" viewBox="0 0 100 8" preserveAspectRatio="none">
-          <rect x="0" y="0" width="100" height="8" fill="#c4a882" />
-          <rect x="0" y="0" width="100" height="2" fill="#d4b896" opacity="0.7" />
-          <line x1="0" y1="6" x2="100" y2="6" stroke="#b09070" strokeWidth="0.5" />
+          <rect x="0" y="0" width="100" height="8" fill="#2a2440" />
+          <rect x="0" y="0" width="100" height="2" fill="#3a3460" opacity="0.7" />
+          <line x1="0" y1="6" x2="100" y2="6" stroke="#1e1a30" strokeWidth="0.5" />
         </svg>
 
         {/* Item slots */}

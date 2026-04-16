@@ -1,5 +1,5 @@
 /* src/index.css */
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap');
 @import './components/components.css';
 
 *, *::before, *::after {
@@ -9,21 +9,37 @@
 }
 
 :root {
+  /* Card / panel colors (light — unchanged) */
   --cream:       #f5f0e8;
   --warm-white:  #faf8f4;
   --charcoal:    #1a1a1a;
   --mid-gray:    #6b6b6b;
   --light-gray:  #d4cfc6;
-  --gold:        #b8a06a;
+
+  /* Shell colors (dark) */
+  --shell-bg:    #1c1830;
+  --shell-border:#2e2a48;
+  --shell-mid:   #6666aa;
+  --shell-bright:#c8c0e8;
+
+  /* Accent colors */
+  --gold:        #D4AF6A;
+  --orange:      #e8601c;
   --danger:      #8b2e2e;
-  --font-serif:  'Cormorant Garamond', Georgia, serif;
+
+  /* Mood colors */
+  --mood-warm:   #e8601c;
+  --mood-neutral:#D4AF6A;
+  --mood-cold:   #8b2e2e;
+
+  --font-serif:  'Playfair Display', Georgia, serif;
   --font-mono:   'Courier New', monospace;
 }
 
 html, body, #root {
   height: 100%;
-  background: var(--cream);
-  color: var(--charcoal);
+  background: var(--shell-bg);
+  color: var(--cream);
   font-family: var(--font-serif);
   font-size: 17px;
   line-height: 1.5;
