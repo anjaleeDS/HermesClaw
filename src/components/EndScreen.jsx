@@ -1,37 +1,47 @@
 // src/components/EndScreen.jsx
 import { ITEMS } from '../gameData.js';
+import { CHAPTER_NAMES, CHAPTER_TARGETS } from '../persistence.js';
 
 function getNudge(game) {
-  const { inventory, lastActions, suspicion, favor, rareChanceBonus } = game;
-  const hasBirkin    = inventory.includes('birkin');
-  const neverBought  = !lastActions.includes('buy');
-  const flipped      = lastActions.includes('flip');
+  const { inventory, lastActions, suspicion, favor, rareChanceBonus, chapter } = game;
+  const targetBag     = CHAPTER_TARGETS[chapter];
+  const won           = inventory.includes(targetBag);
+  const neverBought   = !lastActions.includes('buy');
+  const flipped       = lastActions.includes('flip');
   const highSuspicion = suspicion >= 5;
-  const hadCombo     = rareChanceBonus > 0;
-  const goodFavor    = favor >= 4;
-  const askedEarly   = lastActions.slice(0, 2).includes('ask');
+  const hadCombo      = rareChanceBonus > 0;
+  const goodFavor     = favor >= 4;
+  const askedEarly    = lastActions.slice(0, 2).includes('ask');
 
-  if (hasBirkin)       return null; // won — no nudge needed
+  if (won) return null;
 
-  if (highSuspicion)   return 'She seemed unsettled by something. Urgency, perhaps. Or familiarity.';
-  if (neverBought)     return 'You were present. But she had no sense of your commitment.';
-  if (flipped)         return 'She mentioned to a colleague that she\'d seen you before. Somewhere else.';
+  if (chapter === 1 && favor < 4) return 'She requires more than goodwill this time. A deeper familiarity.';
+  if (chapter === 2 && flipped)   return 'She\'d heard you\'d been selling. That changes things considerably.';
+  if (chapter === 2 && favor < 7) return 'For the Birkin, she needs to be certain. Trust takes time.';
+
+  if (highSuspicion)  return 'She seemed unsettled by something. Urgency, perhaps. Or familiarity.';
+  if (neverBought)    return 'You were present. But she had no sense of your commitment.';
+  if (flipped)        return 'She mentioned to a colleague that she\'d seen you before. Somewhere else.';
   if (hadCombo && goodFavor) return 'There was a moment — after a particular sequence — when something shifted. You were very close.';
-  if (hadCombo)        return 'Something in your pattern caught her attention. The timing wasn\'t quite right.';
-  if (goodFavor)       return 'She liked you. But liking isn\'t the same as offering.';
-  if (askedEarly)      return 'She values patience above almost everything else.';
-  return               'She noticed you. That\'s more than most clients can say. Come back.';
+  if (hadCombo)       return 'Something in your pattern caught her attention. The timing wasn\'t quite right.';
+  if (goodFavor)      return 'She liked you. But liking isn\'t the same as offering.';
+  if (askedEarly)     return 'She values patience above almost everything else.';
+  return              'She noticed you. That\'s more than most clients can say. Come back.';
 }
 
-export default function EndScreen({ game, score, onRestart }) {
-  const hasBirkin = game.inventory.includes('birkin');
-  const nudge     = getNudge(game);
+export default function EndScreen({ game, score, profile, onRestart }) {
+  const targetBag   = CHAPTER_TARGETS[game.chapter ?? 0];
+  const won         = game.inventory.includes(targetBag);
+  const nudge       = getNudge(game);
+  const nextChapter = won && (game.chapter ?? 0) < 2 ? (game.chapter ?? 0) + 1 : null;
 
   function getVerdict() {
-    if (hasBirkin)   return '"You have a certain… quality. We look forward to next season."';
+    if (won && game.chapter === 0) return '"A very good choice. We look forward to seeing you again."';
+    if (won && game.chapter === 1) return '"I knew you\'d find your way back to something worthy of you."';
+    if (won && game.chapter === 2) return '"You understand us completely. That is very rare."';
     if (score > 400) return '"A credible effort. One develops these things over time."';
     if (score > 150) return '"Interesting. We\'ll see."';
-    return           '"We prefer to build relationships slowly."';
+    return '"We prefer to build relationships slowly."';
   }
 
   return (
@@ -39,7 +49,21 @@ export default function EndScreen({ game, score, onRestart }) {
       <div className="end-inner">
         <div className="end-eyebrow">End of Season</div>
         <h1 className="end-score">{score.toLocaleString()} pts</h1>
+        {profile.bestScore > 0 && score >= profile.bestScore && (
+          <div className="end-best-score">Personal best</div>
+        )}
         <p className="end-verdict">{getVerdict()}</p>
+
+        {nextChapter !== null && (
+          <div className="end-chapter-unlock">
+            <span className="end-chapter-unlock-label">New chapter unlocked</span>
+            <span className="end-chapter-unlock-name">{CHAPTER_NAMES[nextChapter]}</span>
+            <p className="end-chapter-unlock-desc">
+              {nextChapter === 1 && 'She knows you now. The rules have changed.'}
+              {nextChapter === 2 && 'You\'re a serious client. She will treat you accordingly.'}
+            </p>
+          </div>
+        )}
 
         {nudge && (
           <div className="end-nudge">
@@ -55,8 +79,7 @@ export default function EndScreen({ game, score, onRestart }) {
           ) : (
             game.inventory.map(id => (
               <div key={id} className="end-item">
-                <strong>{ITEMS[id]?.name}</strong>
-                {' — '}
+                <strong>{ITEMS[id]?.name}</strong>{' — '}
                 {ITEMS[id]?.description}
                 <span className="end-item-score"> +{ITEMS[id]?.score}pts</span>
               </div>
@@ -65,7 +88,7 @@ export default function EndScreen({ game, score, onRestart }) {
         </div>
 
         <button className="end-restart" onClick={onRestart}>
-          Try Again
+          {won && nextChapter !== null ? `Begin Chapter ${nextChapter + 1} →` : 'Try Again'}
         </button>
       </div>
     </div>

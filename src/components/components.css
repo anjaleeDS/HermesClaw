@@ -744,3 +744,132 @@
 .end-restart:hover {
   opacity: 0.72;
 }
+
+/* ─────────────────────────────────────────────
+   END SCREEN — CHAPTER UNLOCK + BEST SCORE
+───────────────────────────────────────────── */
+.end-best-score {
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 16px;
+}
+
+.end-chapter-unlock {
+  border: 1px solid var(--gold);
+  padding: 20px 24px;
+  margin-bottom: 28px;
+  text-align: left;
+}
+
+.end-chapter-unlock-label {
+  display: block;
+  font-size: 10px;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 8px;
+}
+
+.end-chapter-unlock-name {
+  display: block;
+  font-size: 22px;
+  font-weight: 300;
+  color: var(--charcoal);
+  margin-bottom: 8px;
+}
+
+.end-chapter-unlock-desc {
+  font-size: 13px;
+  font-style: italic;
+  color: var(--mid-gray);
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* ─────────────────────────────────────────────
+   INTRO SCREEN — RETURNING PLAYER + STATS
+───────────────────────────────────────────── */
+.intro-returning {
+  border-left: 3px solid var(--light-gray);
+  padding: 14px 20px;
+  margin-bottom: 24px;
+  background: var(--cream);
+}
+
+.intro-returning-label {
+  display: block;
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--mid-gray);
+  margin-bottom: 6px;
+}
+
+.intro-returning-line {
+  font-size: 18px;
+  font-style: italic;
+  font-weight: 300;
+  color: var(--charcoal);
+  margin: 0;
+}
+
+.intro-stats {
+  display: flex;
+  gap: 32px;
+  margin-bottom: 32px;
+  padding: 20px 0;
+  border-top: 1px solid var(--light-gray);
+  border-bottom: 1px solid var(--light-gray);
+}
+
+.intro-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.intro-stat-label {
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--mid-gray);
+}
+
+.intro-stat-value {
+  font-size: 20px;
+  font-weight: 300;
+  font-family: var(--font-mono);
+  color: var(--charcoal);
+}
+
+/* ─────────────────────────────────────────────
+   SHELF — MINI BAG TAG
+───────────────────────────────────────────── */
+.shelf-item-mini-tag {
+  display: inline-block;
+  margin-left: 4px;
+  font-size: 8px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--gold);
+  vertical-align: middle;
+}
+
+/* ─────────────────────────────────────────────
+   HEADER — CHAPTER TARGET
+───────────────────────────────────────────── */
+.header-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.header-target {
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  color: var(--gold);
+  text-transform: uppercase;
+}

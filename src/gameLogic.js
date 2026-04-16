@@ -5,21 +5,24 @@ import { CARD_TEMPLATES, NPC_DIALOGUE } from './gameData.js';
 // INITIAL STATE
 // ─────────────────────────────────────────────
 
-export function createInitialState() {
+export function createInitialState(playerProfile = null) {
+  const profile = playerProfile ?? { runCount: 0, chapter: 0 };
   return {
     phase: 'intro',          // 'intro' | 'playing' | 'result' | 'end'
     turn: 1,                 // 1–10
     money: 5000,
     inventory: [],           // array of item ids
     lastActions: [],         // rolling last 3 action strings
-    favor: 0,                // 0–10, hidden from player
+    favor: profile.chapter >= 1 ? 1 : 0,  // known client gets a head start
     suspicion: 0,            // 0–10, hidden from player
     npcMood: 'neutral',      // 'warm' | 'neutral' | 'cold'
     rareChanceBonus: 0,      // added by combos
     currentCards: [],        // 3 card objects for this turn
-    pendingCards: [],         // next turn's cards, ready after result phase
+    pendingCards: [],        // next turn's cards, ready after result phase
     lastNPCMessage: '',
-    actionSummary: null,      // { moneyDelta, newItem } — visible feedback
+    actionSummary: null,     // { moneyDelta, newItem } — visible feedback
+    chapter: profile.chapter,    // 0=Constance, 1=Kelly, 2=Birkin
+    runCount: profile.runCount,  // drives NPC opening dialogue
   };
 }
 
@@ -220,16 +223,31 @@ export function resolveAction(state, cardId, action) {
     }
 
     case 'ask': {
-      const tooEarly   = s.turn <= 3;
+      const tooEarly    = s.turn <= 3;
       const askedBefore = s.lastActions.filter(a => a === 'ask').length >= 1;
-      if (tooEarly || askedBefore || s.npcMood === 'cold') {
+
+      // Harder each chapter: Ch0 none, Ch1 favor>=4, Ch2 favor>=7
+      const favorRequired  = s.chapter === 0 ? 0 : s.chapter === 1 ? 4 : 7;
+      const notEnoughFavor = s.favor < favorRequired;
+
+      // Ch2 rule: any flip this run disqualifies the ask entirely
+      const flippedThisRun = s.chapter >= 2 && s.lastActions.includes('flip');
+
+      if (tooEarly || askedBefore || s.npcMood === 'cold' || notEnoughFavor || flippedThisRun) {
         s.suspicion = Math.min(10, s.suspicion + 2);
         message = pickDialogue('afterAsk', s.npcMood);
       } else {
-        const chance = 0.05 + (s.favor * 0.05) + s.rareChanceBonus + committedClientBonus;
-        if (Math.random() < chance && !s.inventory.includes('birkin')) {
-          s.inventory = [...s.inventory, 'birkin'];
-          message = 'She disappears behind a curtain. Returns with something wrapped in orange. "For you."';
+        const chance    = 0.05 + (s.favor * 0.05) + s.rareChanceBonus + committedClientBonus;
+        // Regular win targets per chapter (ascending rarity)
+        const targetBag = ['constance24', 'kelly28', 'birkin30'][s.chapter] ?? 'constance24';
+        if (Math.random() < chance && !s.inventory.includes(targetBag)) {
+          s.inventory = [...s.inventory, targetBag];
+          const winMessages = {
+            constance24: 'She steps away for a moment. Returns with a slim box tied in ribbon. "I thought of you."',
+            kelly28:     'She unlocks a cabinet you\'ve never seen opened. "I\'ve been waiting for the right person."',
+            birkin30:    'She disappears behind a curtain. Returns with something wrapped in orange. "For you."',
+          };
+          message = winMessages[targetBag];
         } else {
           s.suspicion = Math.min(10, s.suspicion + 1);
           message = pickDialogue('afterAsk', s.npcMood);
@@ -282,12 +300,19 @@ export function resolveAction(state, cardId, action) {
     }
 
     case 'risk': {
-      const rareChance = 0.15 + (s.favor * 0.08) + s.rareChanceBonus;
+      const rareChance = 0.12 + (s.favor * 0.06) + s.rareChanceBonus;
+      // Mini targets per chapter (ultra-rare — harder than regular ask win)
+      const miniTarget = ['constanceMini', 'kelly25', 'birkin25'][s.chapter] ?? 'constanceMini';
       const roll = Math.random();
-      if (roll < rareChance && !s.inventory.includes('birkin')) {
-        s.inventory = [...s.inventory, 'birkin'];
-        message = 'Against all odds, the moment opens. An orange box appears.';
-      } else if (roll < rareChance + 0.3) {
+      if (roll < rareChance && !s.inventory.includes(miniTarget)) {
+        s.inventory = [...s.inventory, miniTarget];
+        const miniMessages = {
+          constanceMini: 'A moment of luck. She produces something small, perfect, unexpected.',
+          kelly25:       'Against all reason, she opens a second drawer. "We had one left. Now we don\'t."',
+          birkin25:      'Against all odds, the moment opens. An orange box appears.',
+        };
+        message = miniMessages[miniTarget];
+      } else if (roll < rareChance + 0.28) {
         const bonusItems = ['twilly', 'bracelet', 'shoes', 'kellyBelt'].filter(i => !s.inventory.includes(i));
         if (bonusItems.length > 0) {
           s.inventory = [...s.inventory, bonusItems[0]];
@@ -377,18 +402,20 @@ export function resolveAction(state, cardId, action) {
 
 export function calculateScore(state) {
   const ITEM_SCORES = {
-    twilly:    50,
-    bracelet:  100,
-    shoes:     75,
-    kellyBelt: 200,
-    birkin:    500,
+    twilly: 50, bracelet: 100, shoes: 75, kellyBelt: 200,
+    // Chapter bags — regular
+    constance24: 350, kelly28: 600, birkin30: 900,
+    // Chapter bags — mini (ultra-rare)
+    constanceMini: 550, kelly25: 850, birkin25: 1400,
   };
 
-  const hasBirkin        = state.inventory.includes('birkin');
+  // Win = having the regular-size bag for the current chapter
+  const chapterTarget    = ['constance24', 'kelly28', 'birkin30'][state.chapter] ?? 'constance24';
+  const won              = state.inventory.includes(chapterTarget);
   const itemScore        = state.inventory.reduce((sum, id) => sum + (ITEM_SCORES[id] ?? 0), 0);
   const favorScore       = state.favor * 20;
   const suspicionPenalty = state.suspicion * 10;
-  const multiplier       = hasBirkin ? 1.5 : 1;
+  const multiplier       = won ? 1.5 : 1;
 
   return Math.max(0, Math.round((itemScore + favorScore - suspicionPenalty) * multiplier));
 }

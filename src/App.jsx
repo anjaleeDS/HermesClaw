@@ -1,23 +1,22 @@
 // src/App.jsx
 import { useState } from 'react';
 import {
-  createInitialState,
-  startGame,
-  resolveAction,
-  advanceTurn,
-  calculateScore,
+  createInitialState, startGame, resolveAction,
+  advanceTurn, calculateScore,
 } from './gameLogic.js';
-import IntroScreen   from './components/IntroScreen.jsx';
-import GameHeader    from './components/GameHeader.jsx';
-import NPCDialogue   from './components/NPCDialogue.jsx';
-import CardRow       from './components/CardRow.jsx';
-import ResultMoment  from './components/ResultMoment.jsx';
+import { loadProfile, saveProfile, updateProfileAfterRun } from './persistence.js';
+import IntroScreen    from './components/IntroScreen.jsx';
+import GameHeader     from './components/GameHeader.jsx';
+import NPCDialogue    from './components/NPCDialogue.jsx';
+import CardRow        from './components/CardRow.jsx';
+import ResultMoment   from './components/ResultMoment.jsx';
 import ShelfInventory from './components/ShelfInventory.jsx';
-import EndScreen     from './components/EndScreen.jsx';
+import EndScreen      from './components/EndScreen.jsx';
 import './index.css';
 
 export default function App() {
-  const [game, setGame] = useState(createInitialState);
+  const [profile, setProfile] = useState(() => loadProfile());
+  const [game, setGame]       = useState(() => createInitialState(loadProfile()));
 
   function handleStart() {
     setGame(prev => startGame(prev));
@@ -32,30 +31,33 @@ export default function App() {
   }
 
   function handleRestart() {
-    setGame(createInitialState);
+    const score   = calculateScore(game);
+    const updated = updateProfileAfterRun(profile, game, score);
+    saveProfile(updated);
+    setProfile(updated);
+    setGame(createInitialState(updated));
   }
 
-  // ── Intro ──
+  const endScore = game.phase === 'end' ? calculateScore(game) : 0;
+
   if (game.phase === 'intro') {
-    return <IntroScreen onStart={handleStart} />;
+    return <IntroScreen onStart={handleStart} profile={profile} />;
   }
 
-  // ── End ──
   if (game.phase === 'end') {
     return (
       <EndScreen
         game={game}
-        score={calculateScore(game)}
+        score={endScore}
+        profile={profile}
         onRestart={handleRestart}
       />
     );
   }
 
-  // ── Playing + Result share the same shell ──
   return (
     <div className="game-shell">
-      <GameHeader money={game.money} turn={game.turn} />
-
+      <GameHeader money={game.money} turn={game.turn} chapter={game.chapter ?? 0} />
       {game.phase === 'result' ? (
         <ResultMoment
           message={game.lastNPCMessage}
@@ -78,7 +80,6 @@ export default function App() {
           </div>
         </>
       )}
-
       <ShelfInventory
         inventory={game.inventory}
         lastAcquired={game.actionSummary?.newItem ?? null}

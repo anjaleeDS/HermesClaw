@@ -210,13 +210,20 @@ function ConstanceIcon() {
 // ─────────────────────────────────────────────
 
 const SHELF_ITEMS = [
-  { id: 'twilly',    Icon: TwillyIcon,    label: 'Twilly',      bg: '#fff3ed' },
-  { id: 'bracelet',  Icon: BraceletIcon,  label: 'Bracelet',    bg: '#fdf9f0' },
-  { id: 'shoes',     Icon: ShoesIcon,     label: 'Shoes',       bg: '#f8f7f5' },
-  { id: 'kellyBelt', Icon: KellyBeltIcon, label: 'Kelly Belt',  bg: '#fdf9f0' },
-  { id: 'birkin',    Icon: BirkinIcon,    label: 'Birkin',      bg: '#fff3ed' },
-  { id: 'kelly',     Icon: KellyIcon,     label: 'Kelly 28',    bg: '#f5f0e8' },
-  { id: 'constance', Icon: ConstanceIcon, label: 'Constance',   bg: '#fdf9f0' },
+  // Accessories (always available)
+  { id: 'twilly',        Icon: TwillyIcon,    label: 'Twilly',         bg: '#fff3ed' },
+  { id: 'bracelet',      Icon: BraceletIcon,  label: 'Bracelet',       bg: '#fdf9f0' },
+  { id: 'shoes',         Icon: ShoesIcon,     label: 'Shoes',          bg: '#f8f7f5' },
+  { id: 'kellyBelt',     Icon: KellyBeltIcon, label: 'Kelly Belt',     bg: '#fdf9f0' },
+  // Chapter 0 bags
+  { id: 'constance24',   Icon: ConstanceIcon, label: 'Constance 24',   bg: '#fdf9f0' },
+  { id: 'constanceMini', Icon: ConstanceIcon, label: 'Constance Mini', bg: '#fdf9f0', mini: true },
+  // Chapter 1 bags
+  { id: 'kelly28',       Icon: KellyIcon,     label: 'Kelly 28',       bg: '#f5f0e8' },
+  { id: 'kelly25',       Icon: KellyIcon,     label: 'Kelly 25',       bg: '#f5f0e8', mini: true },
+  // Chapter 2 bags
+  { id: 'birkin30',      Icon: BirkinIcon,    label: 'Birkin 30',      bg: '#fff3ed' },
+  { id: 'birkin25',      Icon: BirkinIcon,    label: 'Birkin 25',      bg: '#fff3ed', mini: true },
 ];
 
 // ─────────────────────────────────────────────
@@ -239,7 +246,8 @@ export default function ShelfInventory({ inventory, lastAcquired }) {
 
         {/* Item slots */}
         <div className="shelf-items">
-          {SHELF_ITEMS.map(({ id, Icon, label, bg }) => {
+          {SHELF_ITEMS.map((item) => {
+            const { id, Icon, label, bg } = item;
             const owned   = inventory.includes(id);
             const isNew   = id === lastAcquired;
             return (
@@ -251,8 +259,13 @@ export default function ShelfInventory({ inventory, lastAcquired }) {
               >
                 {owned ? (
                   <>
-                    <div className="shelf-item-icon"><Icon /></div>
-                    <div className="shelf-item-label">{label}</div>
+                    <div className="shelf-item-icon" style={item.mini ? { transform: 'scale(0.75)' } : {}}>
+                      <Icon />
+                    </div>
+                    <div className="shelf-item-label">
+                      {label}
+                      {item.mini && <span className="shelf-item-mini-tag">mini</span>}
+                    </div>
                   </>
                 ) : (
                   <div className="shelf-slot-empty-icon">
