@@ -1,0 +1,247 @@
+// src/gameData.js
+
+export const ITEMS = {
+  // ── Accessories (drop from purchases) ──
+  twilly: {
+    id: 'twilly',
+    name: 'Twilly',
+    description: 'A subtle touch.',
+    score: 50,
+    effect: 'socialBoost',
+  },
+  bracelet: {
+    id: 'bracelet',
+    name: 'Bracelet',
+    description: 'Not your first purchase.',
+    score: 100,
+    effect: 'reputationBoost',
+  },
+  shoes: {
+    id: 'shoes',
+    name: 'Shoes',
+    description: 'They notice everything.',
+    score: 75,
+    effect: 'moodRecovery',
+  },
+  kellyBelt: {
+    id: 'kellyBelt',
+    name: 'Kelly Belt',
+    description: 'Closer.',
+    score: 200,
+    effect: 'dialogueUnlock',
+  },
+
+  // ── Chapter 0 bags — accessible entry point ──
+  constance24: {
+    id: 'constance24',
+    name: 'Constance 24',
+    description: 'The beginning of something.',
+    score: 350,
+    effect: 'scoreMultiplier',
+    chapter: 0,
+    size: 'regular',
+  },
+  constanceMini: {
+    id: 'constanceMini',
+    name: 'Constance Mini',
+    description: 'You weren\'t even looking for this.',
+    score: 550,
+    effect: 'scoreMultiplier',
+    chapter: 0,
+    size: 'mini', // Lucky Moment only
+  },
+
+  // ── Chapter 1 bags — requires relationship ──
+  kelly28: {
+    id: 'kelly28',
+    name: 'Kelly 28',
+    description: 'Structure. Restraint. Everything.',
+    score: 600,
+    effect: 'scoreMultiplier',
+    chapter: 1,
+    size: 'regular',
+  },
+  kelly25: {
+    id: 'kelly25',
+    name: 'Kelly 25',
+    description: 'She made a call for this one.',
+    score: 850,
+    effect: 'scoreMultiplier',
+    chapter: 1,
+    size: 'mini', // Lucky Moment + high favor only
+  },
+
+  // ── Chapter 2 bags — the real game ──
+  birkin30: {
+    id: 'birkin30',
+    name: 'Birkin 30',
+    description: 'Oh.',
+    score: 900,
+    effect: 'scoreMultiplier',
+    chapter: 2,
+    size: 'regular',
+  },
+  birkin25: {
+    id: 'birkin25',
+    name: 'Birkin 25',
+    description: 'There are no words.',
+    score: 1400,
+    effect: 'scoreMultiplier',
+    chapter: 2,
+    size: 'mini', // holy grail — requires everything
+  },
+};
+
+export const NPC_DIALOGUE = {
+  neutral: [
+    'Good afternoon.',
+    'Is there something I can help you with?',
+    'We have some lovely pieces at the moment.',
+    'Take your time. We\'re not going anywhere.',
+    'Of course.',
+  ],
+  warm: [
+    'How lovely to see you again.',
+    'I was thinking of you just this morning.',
+    'There\'s something I\'ve been setting aside.',
+    'Your taste is really quite considered.',
+    'I do enjoy our conversations.',
+    'You know, not everyone notices that detail.',
+    'I think we understand each other.',
+  ],
+  cold: [
+    'That\'s not something we\'re able to help with today.',
+    'We prefer to build these things over time.',
+    'Interesting.',
+    'Perhaps another visit would be more suitable.',
+    'We do have other clients just now.',
+    'I\'m afraid I\'m rather occupied.',
+    'Mm.',
+  ],
+  afterBuy: [
+    'A very good choice.',
+    'That suits you.',
+    'Mm. Yes.',
+    'You have a good eye.',
+    'I\'ll have that wrapped.',
+    'Our clients do tend to return to that one.',
+  ],
+  afterAsk: [
+    'That particular piece has a process.',
+    'I wouldn\'t want to mislead you about timing.',
+    'Some clients find patience is its own reward.',
+    'We don\'t typically work that way.',
+    'That piece requires a certain… context.',
+    'Perhaps after you\'ve visited with us a bit more.',
+    'I\'d hate to disappoint you.',
+    'You\'re very… direct. That\'s one approach.',
+  ],
+  afterChat: [
+    'How charming.',
+    'You must know the Beaumont family.',
+    'Yes, the autumn collection was exceptional.',
+    'One develops an eye for these things.',
+    'How refreshing to speak with someone who understands.',
+    'I thought I recognized your sensibility.',
+    'It\'s rare that one meets someone who truly appreciates the craft.',
+    'Quite.',
+  ],
+  afterWait: [
+    '(She glances at you briefly, then looks away.)',
+    '(A slight nod. Something registered.)',
+    '(She continues what she\'s doing. But differently.)',
+    '(The briefest pause. Then back to the display case.)',
+    '(She seems to appreciate that you\'re not rushing.)',
+  ],
+  afterFlip: [
+    'We do prefer our pieces find permanent homes.',
+    'I\'ll make a note of that.',
+    'Interesting. I wasn\'t aware you\'d… divested.',
+    'We tend to remember these things.',
+  ],
+  comboHint: [
+    'You know, I\'ve been thinking — you might appreciate something we don\'t often show.',
+    'There\'s a client who… actually, let me see what we have.',
+    'I notice you have a certain approach. I respect that.',
+    'Not everyone understands how this works. You seem to.',
+    'I was going to mention — there\'s something that just came in.',
+  ],
+  highSuspicion: [
+    'You seem very… eager.',
+    'I notice you\'ve been asking about quite a few things.',
+    'We appreciate enthusiasm, of course.',
+    'Perhaps I can take your details and follow up.',
+  ],
+};
+
+// Card types and their base weights (higher = more likely to appear).
+// Weights are modified by game state in generateCards().
+export const CARD_TEMPLATES = [
+  {
+    id: 'boutiqueVisit',
+    type: 'boutiqueVisit',
+    title: 'Boutique Visit',
+    subtitle: 'The light is warm. The silence, deliberate.',
+    baseWeight: 3,
+    options: [
+      { label: 'Buy Small Item — $500', action: 'buySmall', cost: 500 },
+      { label: 'Buy Medium Item — $1,500', action: 'buyMedium', cost: 1500 },
+      { label: 'Browse and Leave', action: 'leave', cost: 0 },
+    ],
+  },
+  {
+    id: 'talkToAssociate',
+    type: 'talkToAssociate',
+    title: 'The Associate',
+    subtitle: 'She looks up from the display case.',
+    baseWeight: 3,
+    options: [
+      { label: 'Ask About a Bag', action: 'ask', cost: 0 },
+      { label: 'Chat Casually', action: 'chat', cost: 0 },
+      { label: 'Compliment Her Taste', action: 'compliment', cost: 0 },
+    ],
+  },
+  {
+    id: 'wait',
+    type: 'wait',
+    title: 'Do Nothing',
+    subtitle: 'Patience is its own currency.',
+    baseWeight: 2,
+    options: [
+      { label: 'Wait This Turn', action: 'wait', cost: 0 },
+    ],
+  },
+  {
+    id: 'secondaryMarket',
+    type: 'secondaryMarket',
+    title: 'Secondary Market',
+    subtitle: 'A discreet offer from someone with taste.',
+    baseWeight: 1,
+    options: [
+      { label: 'Flip Item (+$1,000)', action: 'flip', cost: 0 },
+      { label: 'Decline', action: 'declineFlip', cost: 0 },
+    ],
+  },
+  {
+    id: 'luckyMoment',
+    type: 'luckyMoment',
+    title: 'A Quiet Opportunity',
+    subtitle: 'Something rare has become... available.',
+    baseWeight: 1, // increases with favor, decreases with suspicion
+    options: [
+      { label: 'Take the Risk', action: 'risk', cost: 0 },
+      { label: 'Play It Safe', action: 'safe', cost: 0 },
+    ],
+  },
+  {
+    id: 'coldShoulder',
+    type: 'coldShoulder',
+    title: 'Cold Shoulder',
+    subtitle: 'The temperature in the room has shifted.',
+    baseWeight: 0, // only appears when suspicion is high
+    options: [
+      { label: 'Apologize', action: 'apologize', cost: 0 },
+      { label: 'Leave Quietly', action: 'leaveQuietly', cost: 0 },
+    ],
+  },
+];

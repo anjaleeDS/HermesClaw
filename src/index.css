@@ -1,0 +1,40 @@
+/* src/index.css */
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap');
+@import './components/components.css';
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --cream:       #f5f0e8;
+  --warm-white:  #faf8f4;
+  --charcoal:    #1a1a1a;
+  --mid-gray:    #6b6b6b;
+  --light-gray:  #d4cfc6;
+  --gold:        #b8a06a;
+  --danger:      #8b2e2e;
+  --font-serif:  'Cormorant Garamond', Georgia, serif;
+  --font-mono:   'Courier New', monospace;
+}
+
+html, body, #root {
+  height: 100%;
+  background: var(--cream);
+  color: var(--charcoal);
+  font-family: var(--font-serif);
+  font-size: 17px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+.game-shell {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 0 32px 48px;
+}
