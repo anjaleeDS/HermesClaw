@@ -138,22 +138,27 @@ Whether money should carry between chapters is unresolved. Currently always rese
 
 ---
 
-## Immediate Next Tasks (V2)
+## Completed (V1.1 → V2)
 
-Priority order based on user feedback:
+✓ **Wire startGame() opening line to returningClient / loyalClient / postConstance / postKelly pools** — "she remembers you" now happens in-game via dialogue pools.
 
-1. **Wire startGame() opening line to returningClient / loyalClient / postConstance / postKelly pools** — this makes the "she remembers you" feeling actually work in-game, not just on the intro screen. Code is above.
+✓ **Redraw bag icons as clean silhouettes** — ConstanceIcon, KellyIcon, BirkinIcon now have cleaner, iconic outlines.
 
-2. **Fix afterFlip dialogue** — one-line fix in gameLogic.js `flip` case.
+---
 
-3. **Redraw bag icons as clean silhouettes** — ConstanceIcon, KellyIcon, BirkinIcon in ShelfInventory.jsx. Keep same SVG structure, improve paths to read as iconic shapes.
+## V2 Backlog & Feature Ideas
 
-4. **Resolve V2 questions with user:**
-   - Does money carry between chapters?
-   - Is there a Ch.3 / post-Birkin state?
-   - Legacy screen for all-time bag collection?
+**High Priority (Design + Implementation)**
+- **Item matching system** — Show how acquired items synergize with each other. E.g., player acquires Shoes, then Twilly → NPC remarks "Those shoes pair beautifully with the scarf you chose." Could unlock bonus dialogue, visual indicators, or soft hints about outfit/styling. Opens design space for deeper inventory interaction.
 
-5. **NPC portrait mood expressiveness** — the warm/neutral/cold variants already work via SVG path props in AssociatePortrait.jsx. The female portrait (Ch.1) and androgynous portrait (Ch.2) could use more distinctive mouth shapes.
+**Medium Priority (Game Design Questions)**
+- **Money carry between chapters** — Currently resets to $5,000 each run. Decision: carryover economics or reset-per-chapter tension?
+- **Ch.3 after Birkin win** — Currently Ch.2 win shows a final verdict with no unlock. Post-game state options: legacy screen, meta-victory mode, or "true ending" condition?
+- **Legacy screen** — Show all bags ever acquired across all-time runs (lifetime collection tracker).
+
+**Low Priority (Polish)**
+- **NPC portrait refinement** — More distinct mouth/brow shapes per mood state (already wired via SVG props, just needs redraw).
+- **afterFlip dialogue** — Currently hardcoded; could call `pickDialogue('afterFlip', s.npcMood)` for dynamic pool (afterFlip pool is defined).
 
 ---
 

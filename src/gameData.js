@@ -37,6 +37,7 @@ export const ITEMS = {
     name: 'Constance 24',
     description: 'The beginning of something.',
     score: 350,
+    price: 2000,
     effect: 'scoreMultiplier',
     chapter: 0,
     size: 'regular',
@@ -46,6 +47,7 @@ export const ITEMS = {
     name: 'Constance Mini',
     description: 'You weren\'t even looking for this.',
     score: 550,
+    price: 2500,
     effect: 'scoreMultiplier',
     chapter: 0,
     size: 'mini', // Lucky Moment only
@@ -57,6 +59,7 @@ export const ITEMS = {
     name: 'Kelly 28',
     description: 'Structure. Restraint. Everything.',
     score: 600,
+    price: 3000,
     effect: 'scoreMultiplier',
     chapter: 1,
     size: 'regular',
@@ -66,6 +69,7 @@ export const ITEMS = {
     name: 'Kelly 25',
     description: 'She made a call for this one.',
     score: 850,
+    price: 3500,
     effect: 'scoreMultiplier',
     chapter: 1,
     size: 'mini', // Lucky Moment + high favor only
@@ -77,6 +81,7 @@ export const ITEMS = {
     name: 'Birkin 30',
     description: 'Oh.',
     score: 900,
+    price: 4000,
     effect: 'scoreMultiplier',
     chapter: 2,
     size: 'regular',
@@ -86,6 +91,7 @@ export const ITEMS = {
     name: 'Birkin 25',
     description: 'There are no words.',
     score: 1400,
+    price: 5000,
     effect: 'scoreMultiplier',
     chapter: 2,
     size: 'mini', // holy grail — requires everything
@@ -172,6 +178,30 @@ export const NPC_DIALOGUE = {
     'We appreciate enthusiasm, of course.',
     'Perhaps I can take your details and follow up.',
   ],
+  returningClient: [
+    'Oh. You\'re back.',
+    'Well, this is a pleasant surprise.',
+    'I remember you.',
+    'I was hoping you\'d return.',
+  ],
+  loyalClient: [
+    'You\'re back. Again.',
+    'You know, not everyone has your patience.',
+    'I\'ve come to expect you.',
+    'There\'s something I\'ve been saving for someone like you.',
+  ],
+  postConstance: [
+    'I heard the bag found a good home.',
+    'She suits you, doesn\'t she?',
+    'You understand the responsibility now.',
+    'Welcome to a different kind of client.',
+  ],
+  postKelly: [
+    'I\'ve been expecting you.',
+    'You know what comes next. The question is whether you\'re ready.',
+    'I think we both know what you\'re here for.',
+    'Some clients never make it this far.',
+  ],
 };
 
 // Card types and their base weights (higher = more likely to appear).
@@ -218,7 +248,7 @@ export const CARD_TEMPLATES = [
     subtitle: 'A discreet offer from someone with taste.',
     baseWeight: 1,
     options: [
-      { label: 'Flip Item (+$1,000)', action: 'flip', cost: 0 },
+      { label: 'Make the Arrangement (+$1,000)', action: 'flip', cost: 0 },
       { label: 'Decline', action: 'declineFlip', cost: 0 },
     ],
   },

@@ -106,90 +106,76 @@ function KellyBeltIcon() {
 }
 
 function BirkinIcon() {
-  // THE Birkin — clean trapezoid, paired handles, gold turnlock
+  // THE Birkin — iconic trapezoid silhouette, twin handles, gold turnlock
   return (
     <svg width="52" height="52" viewBox="0 0 52 52" fill="none">
-      {/* Bag body — trapezoid wider at bottom */}
-      <path d="M7 50 L7 21 Q7 17 11 17 L41 17 Q45 17 45 21 L45 50 Z"
-            fill="#e8601c" stroke="#1a1a1a" strokeWidth="2.2" />
-      {/* Flap shadow line */}
-      <path d="M7 21 Q26 27 45 21" fill="none" stroke="#c44e14" strokeWidth="1.5" />
-      {/* Bottom leather strip */}
-      <rect x="7" y="46" width="38" height="4" rx="1"
-            fill="#c44e14" stroke="#1a1a1a" strokeWidth="1.5" />
-      {/* Left handle */}
-      <path d="M15 17 Q13 7 17 5 Q20 4 21 7 Q22 11 20 17"
-            stroke="#1a1a1a" strokeWidth="2.2" fill="none" strokeLinecap="round" />
-      {/* Right handle */}
-      <path d="M32 17 Q30 7 31 5 Q34 4 37 7 Q39 11 37 17"
-            stroke="#1a1a1a" strokeWidth="2.2" fill="none" strokeLinecap="round" />
-      {/* Turnlock — gold rect, centered */}
-      <rect x="21" y="19" width="10" height="7" rx="1"
-            fill="#D4AF6A" stroke="#1a1a1a" strokeWidth="1.8" />
-      <rect x="23.5" y="21" width="5" height="3" rx="0.5" fill="#1a1a1a" opacity="0.4" />
-      {/* Corner feet */}
-      <circle cx="10" cy="50" r="1.5" fill="#D4AF6A" stroke="#1a1a1a" strokeWidth="1" />
-      <circle cx="42" cy="50" r="1.5" fill="#D4AF6A" stroke="#1a1a1a" strokeWidth="1" />
-      {/* Shine */}
-      <path d="M10 27 Q15 22 22 23" stroke="white" strokeWidth="1.4" opacity="0.3" strokeLinecap="round" />
+      {/* Bag body — clean trapezoid */}
+      <path d="M10 48 L8 20 Q8 16 13 14 L39 14 Q44 16 44 20 L42 48 Z"
+            fill="#e8601c" stroke="#1a1a1a" strokeWidth="2.4" strokeLinejoin="round" />
+      {/* Left handle — arc */}
+      <path d="M16 14 Q14 4 22 2 Q24 2 24 4 Q24 10 20 14"
+            stroke="#1a1a1a" strokeWidth="2.4" fill="none" strokeLinecap="round" />
+      {/* Right handle — arc */}
+      <path d="M36 14 Q40 10 40 4 Q40 2 42 2 Q50 4 48 14"
+            stroke="#1a1a1a" strokeWidth="2.4" fill="none" strokeLinecap="round" />
+      {/* Turnlock — bold gold rectangle */}
+      <rect x="19" y="24" width="14" height="9" rx="1.5"
+            fill="#D4AF6A" stroke="#1a1a1a" strokeWidth="2" />
+      {/* Turnlock interior detail */}
+      <rect x="22" y="26" width="8" height="5" rx="0.5" fill="#1a1a1a" opacity="0.3" />
+      {/* Bottom corner feet */}
+      <circle cx="11" cy="48" r="1.8" fill="#D4AF6A" stroke="#1a1a1a" strokeWidth="1.2" />
+      <circle cx="41" cy="48" r="1.8" fill="#D4AF6A" stroke="#1a1a1a" strokeWidth="1.2" />
     </svg>
   );
 }
 
 function KellyIcon() {
-  // The Kelly — structured rectangular body, single arched handle, prominent gold oval clasp
+  // The Kelly — iconic structured rectangle, single graceful handle, gold oval lock
   return (
     <svg width="52" height="52" viewBox="0 0 52 52" fill="none">
       {/* Bag body */}
-      <rect x="7" y="24" width="38" height="24" rx="1"
-            fill="#2a2a2a" stroke="#1a1a1a" strokeWidth="2.2" />
-      {/* Structured flap */}
-      <path d="M7 24 L7 13 Q7 9 12 9 L40 9 Q45 9 45 13 L45 24 Q26 31 7 24 Z"
-            fill="#1c1c1c" stroke="#1a1a1a" strokeWidth="2" />
-      {/* Single centered handle — Kelly's signature */}
-      <path d="M18 24 Q17 12 26 10 Q35 12 34 24"
-            stroke="#3a3a3a" strokeWidth="3.5" fill="none" strokeLinecap="round" />
-      <path d="M18 24 Q17 12 26 10 Q35 12 34 24"
-            stroke="#1a1a1a" strokeWidth="2.2" fill="none" strokeLinecap="round" />
-      {/* Gold oval turnlock — prominent */}
-      <ellipse cx="26" cy="26" rx="7" ry="5.5"
+      <rect x="8" y="22" width="36" height="26" rx="2"
+            fill="#2a2a2a" stroke="#1a1a1a" strokeWidth="2.4" />
+      {/* Structured flap — angled top */}
+      <path d="M8 22 L10 10 Q10 8 15 8 L37 8 Q42 8 42 10 L44 22 Z"
+            fill="#1c1c1c" stroke="#1a1a1a" strokeWidth="2.4" strokeLinejoin="round" />
+      {/* Single centered handle — the signature */}
+      <path d="M19 22 Q18 8 26 4 Q34 8 33 22"
+            stroke="#1a1a1a" strokeWidth="2.6" fill="none" strokeLinecap="round" />
+      {/* Gold oval turnlock — iconic */}
+      <ellipse cx="26" cy="26" rx="8" ry="6"
                fill="#D4AF6A" stroke="#1a1a1a" strokeWidth="2" />
-      <ellipse cx="26" cy="26" rx="3" ry="2.2"
-               fill="#1a1a1a" opacity="0.45" />
-      {/* Corner hardware */}
-      <circle cx="10" cy="46" r="2" fill="#D4AF6A" stroke="#1a1a1a" strokeWidth="1" />
-      <circle cx="42" cy="46" r="2" fill="#D4AF6A" stroke="#1a1a1a" strokeWidth="1" />
-      {/* Interior stitching */}
-      <rect x="11" y="30" width="30" height="15" rx="0"
-            fill="none" stroke="#3a3a3a" strokeWidth="0.7" strokeDasharray="2.5 2" />
-      {/* Shine */}
-      <path d="M11 30 Q17 26 23 27" stroke="white" strokeWidth="1.2" opacity="0.25" strokeLinecap="round" />
+      {/* Turnlock interior */}
+      <ellipse cx="26" cy="26" rx="3.5" ry="2.5"
+               fill="#1a1a1a" opacity="0.35" />
+      {/* Hardware corners */}
+      <circle cx="10" cy="48" r="2" fill="#D4AF6A" stroke="#1a1a1a" strokeWidth="1.2" />
+      <circle cx="42" cy="48" r="2" fill="#D4AF6A" stroke="#1a1a1a" strokeWidth="1.2" />
     </svg>
   );
 }
 
 function ConstanceIcon() {
-  // The Constance — compact square crossbody, H clasp front and center
+  // The Constance — compact, iconic square crossbody with bold H clasp
   return (
     <svg width="52" height="52" viewBox="0 0 52 52" fill="none">
-      {/* Bag body */}
-      <rect x="9" y="18" width="34" height="30" rx="2"
-            fill="#b8820a" stroke="#1a1a1a" strokeWidth="2.2" />
-      {/* Flap — top portion, slightly darker */}
-      <rect x="9" y="18" width="34" height="16" rx="2"
-            fill="#9a6e08" stroke="#1a1a1a" strokeWidth="2" />
-      {/* Crossbody strap — arching from left side */}
-      <path d="M9 28 Q2 22 4 12 Q6 5 13 7 Q18 9 16 18"
-            stroke="#1a1a1a" strokeWidth="2.2" fill="none" strokeLinecap="round" />
-      {/* THE H CLASP — gold, front and center, prominent */}
-      <rect x="19" y="29" width="14" height="12" rx="1"
-            fill="#D4AF6A" stroke="#1a1a1a" strokeWidth="2" />
-      {/* H shape cutout */}
-      <rect x="21" y="31" width="3" height="8" fill="#1a1a1a" />
-      <rect x="28" y="31" width="3" height="8" fill="#1a1a1a" />
-      <rect x="21" y="34.5" width="10" height="2.5" fill="#1a1a1a" />
-      {/* Shine */}
-      <path d="M12 22 Q18 19 25 20" stroke="white" strokeWidth="1.2" opacity="0.3" strokeLinecap="round" />
+      {/* Bag body — compact square */}
+      <rect x="11" y="16" width="30" height="32" rx="2"
+            fill="#b8820a" stroke="#1a1a1a" strokeWidth="2.4" />
+      {/* Flap — top darker portion */}
+      <rect x="11" y="16" width="30" height="18" rx="2"
+            fill="#9a6e08" stroke="#1a1a1a" strokeWidth="2.2" />
+      {/* Crossbody strap — curves from top left */}
+      <path d="M11 24 Q3 18 5 6 Q8 2 16 6 Q20 8 18 16"
+            stroke="#1a1a1a" strokeWidth="2.4" fill="none" strokeLinecap="round" />
+      {/* THE H CLASP — iconic, centered, bold */}
+      <rect x="17" y="28" width="18" height="14" rx="2"
+            fill="#D4AF6A" stroke="#1a1a1a" strokeWidth="2.2" />
+      {/* H shape interior */}
+      <rect x="20" y="31" width="3.5" height="8" fill="#1a1a1a" opacity="0.4" />
+      <rect x="28.5" y="31" width="3.5" height="8" fill="#1a1a1a" opacity="0.4" />
+      <rect x="20" y="34.5" width="11.5" height="3" fill="#1a1a1a" opacity="0.4" />
     </svg>
   );
 }

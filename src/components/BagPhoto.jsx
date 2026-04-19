@@ -35,7 +35,7 @@ export default function BagPhoto({ bagId, colorIndex = 0 }) {
       className="bag-photo-reveal"
       style={{
         backgroundImage:    `url(${url})`,
-        backgroundSize:     '300% 200%',
+        backgroundSize:     '300% auto',
         backgroundPosition: `${xPos} ${yPos}`,
         backgroundRepeat:   'no-repeat',
       }}

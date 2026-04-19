@@ -1,5 +1,5 @@
 // src/gameLogic.js
-import { CARD_TEMPLATES, NPC_DIALOGUE } from './gameData.js';
+import { CARD_TEMPLATES, NPC_DIALOGUE, ITEMS } from './gameData.js';
 
 // ─────────────────────────────────────────────
 // INITIAL STATE
@@ -30,7 +30,21 @@ export function createInitialState(playerProfile = null) {
 export function startGame(state) {
   const s = { ...state, phase: 'playing' };
   s.currentCards = generateCards(s);
-  s.lastNPCMessage = 'Good afternoon. Welcome.';
+
+  // Wire opening dialogue to returning player pools
+  function getOpeningPool(runCount, chapter) {
+    if (chapter === 2) return 'postKelly';
+    if (chapter === 1) return 'postConstance';
+    if (runCount >= 5) return 'loyalClient';
+    if (runCount >= 1) return 'returningClient';
+    return null; // first ever visit
+  }
+
+  const pool = getOpeningPool(s.runCount, s.chapter);
+  s.lastNPCMessage = pool
+    ? pickDialogue(pool, s.npcMood)
+    : 'Good afternoon. Welcome.';
+
   return s;
 }
 
@@ -240,8 +254,10 @@ export function resolveAction(state, cardId, action) {
         const chance    = 0.05 + (s.favor * 0.05) + s.rareChanceBonus + committedClientBonus;
         // Regular win targets per chapter (ascending rarity)
         const targetBag = ['constance24', 'kelly28', 'birkin30'][s.chapter] ?? 'constance24';
-        if (Math.random() < chance && !s.inventory.includes(targetBag)) {
+        const bagPrice = ITEMS[targetBag]?.price ?? 0;
+        if (Math.random() < chance && !s.inventory.includes(targetBag) && s.money >= bagPrice) {
           s.inventory = [...s.inventory, targetBag];
+          s.money -= bagPrice;
           const winMessages = {
             constance24: 'She steps away for a moment. Returns with a slim box tied in ribbon. "I thought of you."',
             kelly28:     'She unlocks a cabinet you\'ve never seen opened. "I\'ve been waiting for the right person."',
@@ -288,7 +304,7 @@ export function resolveAction(state, cardId, action) {
       s.money += 1000;
       s.suspicion = Math.min(10, s.suspicion + 2);
       s.lastActions = appendAction(s.lastActions, 'flip');
-      message = 'The transaction is clean. She clocked it.';
+      message = pickDialogue('afterFlip', s.npcMood);
       break;
     }
 
@@ -304,8 +320,10 @@ export function resolveAction(state, cardId, action) {
       // Mini targets per chapter (ultra-rare — harder than regular ask win)
       const miniTarget = ['constanceMini', 'kelly25', 'birkin25'][s.chapter] ?? 'constanceMini';
       const roll = Math.random();
-      if (roll < rareChance && !s.inventory.includes(miniTarget)) {
+      const miniPrice = ITEMS[miniTarget]?.price ?? 0;
+      if (roll < rareChance && !s.inventory.includes(miniTarget) && s.money >= miniPrice) {
         s.inventory = [...s.inventory, miniTarget];
+        s.money -= miniPrice;
         const miniMessages = {
           constanceMini: 'A moment of luck. She produces something small, perfect, unexpected.',
           kelly25:       'Against all reason, she opens a second drawer. "We had one left. Now we don\'t."',
