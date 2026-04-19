@@ -4,3 +4,5 @@ dist
 
 # Private design documents — not for public repo
 MECHANICS.md
+src/archetypes.js
+research/

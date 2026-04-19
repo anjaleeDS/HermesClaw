@@ -13,6 +13,8 @@ export function createInitialState(playerProfile = null) {
     money: 5000,
     inventory: [],           // array of item ids
     lastActions: [],         // rolling last 3 action strings
+    hasAsked: false,         // true once player asks this run (prevents re-ask)
+    hasFlipped: false,       // true once player flips this run (blocks Ch2 ask)
     favor: profile.chapter >= 1 ? 1 : 0,  // known client gets a head start
     suspicion: 0,            // 0–10, hidden from player
     npcMood: 'neutral',      // 'warm' | 'neutral' | 'cold'
@@ -267,14 +269,14 @@ export function resolveAction(state, cardId, action) {
 
     case 'ask': {
       const tooEarly    = s.turn <= 3;
-      const askedBefore = s.lastActions.filter(a => a === 'ask').length >= 1;
+      const askedBefore = s.hasAsked;
 
       // Harder each chapter: Ch0 none, Ch1 favor>=4, Ch2 favor>=7
       const favorRequired  = s.chapter === 0 ? 0 : s.chapter === 1 ? 4 : 7;
       const notEnoughFavor = s.favor < favorRequired;
 
       // Ch2 rule: any flip this run disqualifies the ask entirely
-      const flippedThisRun = s.chapter >= 2 && s.lastActions.includes('flip');
+      const flippedThisRun = s.chapter >= 2 && s.hasFlipped;
 
       if (tooEarly || askedBefore || s.npcMood === 'cold' || notEnoughFavor || flippedThisRun) {
         s.suspicion = Math.min(10, s.suspicion + 2);
@@ -298,6 +300,7 @@ export function resolveAction(state, cardId, action) {
           message = pickDialogue('afterAsk', s.npcMood);
         }
       }
+      s.hasAsked = true;
       s.lastActions = appendAction(s.lastActions, 'ask');
       break;
     }
@@ -332,6 +335,7 @@ export function resolveAction(state, cardId, action) {
     case 'flip': {
       s.money += 1000;
       s.suspicion = Math.min(10, s.suspicion + 2);
+      s.hasFlipped = true;
       s.lastActions = appendAction(s.lastActions, 'flip');
       message = pickDialogue('afterFlip', s.npcMood);
       break;
@@ -345,7 +349,7 @@ export function resolveAction(state, cardId, action) {
     }
 
     case 'risk': {
-      const rareChance = 0.12 + (s.favor * 0.06) + s.rareChanceBonus;
+      const rareChance = 0.12 + (s.favor * 0.06) + s.rareChanceBonus + committedClientBonus;
       // Mini targets per chapter (ultra-rare — harder than regular ask win)
       const miniTarget = ['constanceMini', 'kelly25', 'birkin25'][s.chapter] ?? 'constanceMini';
       const roll = Math.random();
@@ -428,9 +432,9 @@ export function resolveAction(state, cardId, action) {
       message = 'Nothing happens.';
   }
 
-  // Evaluate combos after action — apply burst effects immediately
+  // Evaluate combos after action — accumulate rare bonus across the run
   const { rareBonus, favorBurst, suspicionDrop, comboFired } = checkCombos(s.lastActions);
-  s.rareChanceBonus = rareBonus + committedClientBonus;
+  s.rareChanceBonus += rareBonus;
 
   if (favorBurst > 0)   s.favor     = Math.min(10, s.favor + favorBurst);
   if (suspicionDrop > 0) s.suspicion = Math.max(0, s.suspicion - suspicionDrop);
@@ -477,21 +481,10 @@ export function resolveAction(state, cardId, action) {
 // ─────────────────────────────────────────────
 
 export function calculateScore(state) {
-  const ITEM_SCORES = {
-    twilly: 50, bracelet: 100, shoes: 75, kellyBelt: 200,
-    // Everyday bags (SA-offered)
-    evelyneTpm: 180, picotin18: 220, gardenParty: 200,
-    bolide: 320, roulis: 380, lindy26: 400,
-    // Chapter bags — regular
-    constance24: 350, kelly28: 600, birkin30: 900,
-    // Chapter bags — mini (ultra-rare)
-    constanceMini: 550, kelly25: 850, birkin25: 1400,
-  };
-
   // Win = having the regular-size bag for the current chapter
   const chapterTarget    = ['constance24', 'kelly28', 'birkin30'][state.chapter] ?? 'constance24';
   const won              = state.inventory.includes(chapterTarget);
-  const itemScore        = state.inventory.reduce((sum, id) => sum + (ITEM_SCORES[id] ?? 0), 0);
+  const itemScore        = state.inventory.reduce((sum, id) => sum + (ITEMS[id]?.score ?? 0), 0);
   const favorScore       = state.favor * 20;
   const suspicionPenalty = state.suspicion * 10;
   const multiplier       = won ? 1.5 : 1;

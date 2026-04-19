@@ -32,7 +32,7 @@ export function updateProfileAfterRun(profile, gameState, score) {
   // Win = acquiring the regular-size chapter bag (not just mini)
   const targetBag  = CHAPTER_TARGETS[profile.chapter];
   const won        = gameState.inventory.includes(targetBag);
-  const flipped    = gameState.lastActions.includes('flip');
+  const flipped    = gameState.hasFlipped;
   const askedEarly = gameState.lastActions.slice(0, 2).includes('ask');
 
   return {
