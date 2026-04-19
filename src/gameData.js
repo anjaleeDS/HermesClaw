@@ -31,6 +31,62 @@ export const ITEMS = {
     effect: 'dialogueUnlock',
   },
 
+  // ── Everyday bags (SA-offered, no quota required) ──
+  evelyneTpm: {
+    id: 'evelyneTpm',
+    name: 'Evelyne TPM',
+    description: 'Practical. She noticed.',
+    score: 180,
+    price: 2425,
+    effect: 'socialBoost',
+    everyday: true,
+  },
+  picotin18: {
+    id: 'picotin18',
+    name: 'Picotin 18',
+    description: 'A basket. A statement.',
+    score: 220,
+    price: 3725,
+    effect: 'socialBoost',
+    everyday: true,
+  },
+  gardenParty: {
+    id: 'gardenParty',
+    name: 'Garden Party 36',
+    description: 'She trusts you with canvas.',
+    score: 200,
+    price: 3975,
+    effect: 'socialBoost',
+    everyday: true,
+  },
+  bolide: {
+    id: 'bolide',
+    name: 'Bolide 1923 Mini',
+    description: 'The original. Understated.',
+    score: 320,
+    price: 6900,
+    effect: 'socialBoost',
+    everyday: true,
+  },
+  roulis: {
+    id: 'roulis',
+    name: 'Roulis Mini',
+    description: 'A quiet obsession.',
+    score: 380,
+    price: 9500,
+    effect: 'socialBoost',
+    everyday: true,
+  },
+  lindy26: {
+    id: 'lindy26',
+    name: 'Lindy 26',
+    description: 'Effortless, yet deliberate.',
+    score: 400,
+    price: 9900,
+    effect: 'socialBoost',
+    everyday: true,
+  },
+
   // ── Chapter 0 bags — accessible entry point ──
   constance24: {
     id: 'constance24',
@@ -159,6 +215,19 @@ export const NPC_DIALOGUE = {
     '(The briefest pause. Then back to the display case.)',
     '(She seems to appreciate that you\'re not rushing.)',
   ],
+  saOffer: [
+    'We\'ve just had something come in. I thought of you.',
+    'There\'s a piece I\'ve been holding. Are you interested?',
+    'I don\'t show this to everyone.',
+    'I happened to set one aside. Purely by chance.',
+    'You might appreciate this. We don\'t often have it available.',
+  ],
+  saOfferDecline: [
+    'Of course. I understand completely.',
+    'No pressure at all. It will find the right home.',
+    'I appreciate your restraint. That says something.',
+    'Very well. I\'ll keep you in mind.',
+  ],
   afterFlip: [
     'We do prefer our pieces find permanent homes.',
     'I\'ll make a note of that.',
@@ -203,6 +272,8 @@ export const NPC_DIALOGUE = {
     'Some clients never make it this far.',
   ],
 };
+
+export const EVERYDAY_BAGS = ['evelyneTpm', 'picotin18', 'gardenParty', 'bolide', 'roulis', 'lindy26'];
 
 // Card types and their base weights (higher = more likely to appear).
 // Weights are modified by game state in generateCards().

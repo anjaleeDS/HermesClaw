@@ -1,5 +1,5 @@
 // src/gameLogic.js
-import { CARD_TEMPLATES, NPC_DIALOGUE, ITEMS } from './gameData.js';
+import { CARD_TEMPLATES, NPC_DIALOGUE, ITEMS, EVERYDAY_BAGS } from './gameData.js';
 
 // ─────────────────────────────────────────────
 // INITIAL STATE
@@ -19,6 +19,8 @@ export function createInitialState(playerProfile = null) {
     rareChanceBonus: 0,      // added by combos
     currentCards: [],        // 3 card objects for this turn
     pendingCards: [],        // next turn's cards, ready after result phase
+    currentOffer: null,      // everyday bag id offered this turn (for saOffer card)
+    pendingOffer: null,      // everyday bag id for next turn's saOffer
     lastNPCMessage: '',
     actionSummary: null,     // { moneyDelta, newItem } — visible feedback
     chapter: profile.chapter,    // 0=Constance, 1=Kelly, 2=Birkin
@@ -29,7 +31,9 @@ export function createInitialState(playerProfile = null) {
 // Move from intro → playing
 export function startGame(state) {
   const s = { ...state, phase: 'playing' };
-  s.currentCards = generateCards(s);
+  const { cards: startCards, offer: startOffer } = generateCards(s);
+  s.currentCards = startCards;
+  s.currentOffer = startOffer;
 
   // Wire opening dialogue to returning player pools
   function getOpeningPool(runCount, chapter) {
@@ -57,6 +61,7 @@ export function advanceTurn(state) {
     ...state,
     phase: 'playing',
     currentCards: state.pendingCards,
+    currentOffer: state.pendingOffer,
     actionSummary: null,
   };
 }
@@ -66,6 +71,12 @@ export function advanceTurn(state) {
 // ─────────────────────────────────────────────
 
 export function generateCards(state) {
+  // Pick a random unowned everyday bag to potentially offer this turn
+  const unownedEveryday = EVERYDAY_BAGS.filter(id => !state.inventory.includes(id));
+  const offerItemId = unownedEveryday.length > 0
+    ? unownedEveryday[Math.floor(Math.random() * unownedEveryday.length)]
+    : null;
+
   // Clone templates with adjustable weights
   const weighted = CARD_TEMPLATES.map(card => ({
     ...card,
@@ -98,6 +109,24 @@ export function generateCards(state) {
     }
   }
 
+  // SA Offer: dynamic card weighted by favor — appears once there's some rapport
+  if (offerItemId) {
+    const item = ITEMS[offerItemId];
+    const offerWeight = Math.max(0, 1 + Math.floor(state.favor / 3));
+    const saOfferCard = {
+      id: 'saOffer',
+      type: 'saOffer',
+      title: 'The Associate Offers',
+      subtitle: `"We have a ${item.name} available."`,
+      weight: offerWeight,
+      options: [
+        { label: `Purchase — $${item.price.toLocaleString()}`, action: 'saOfferBuy', cost: item.price },
+        { label: 'Perhaps another time', action: 'saOfferDecline', cost: 0 },
+      ],
+    };
+    for (let i = 0; i < offerWeight; i++) pool.push(saOfferCard);
+  }
+
   // Shuffle and pick 3 unique card types
   const shuffled = [...pool].sort(() => Math.random() - 0.5);
   const seen = new Set();
@@ -114,7 +143,7 @@ export function generateCards(state) {
     picked.push(CARD_TEMPLATES.find(c => c.id === 'boutiqueVisit'));
   }
 
-  return picked;
+  return { cards: picked, offer: offerItemId };
 }
 
 // ─────────────────────────────────────────────
@@ -368,6 +397,33 @@ export function resolveAction(state, cardId, action) {
       break;
     }
 
+    case 'saOfferBuy': {
+      const itemId = s.currentOffer;
+      const item = ITEMS[itemId];
+      if (!itemId || !item || s.inventory.includes(itemId)) {
+        message = 'The moment has passed.';
+        break;
+      }
+      if (s.money < item.price) {
+        message = 'Your card was declined. Discreetly.';
+        s.suspicion = Math.min(10, s.suspicion + 1);
+        break;
+      }
+      s.money -= item.price;
+      s.inventory = [...s.inventory, itemId];
+      s.favor = Math.min(10, s.favor + 1);
+      s.lastActions = appendAction(s.lastActions, 'buy');
+      message = `She presents the ${item.name}. "A very good choice."`;
+      break;
+    }
+
+    case 'saOfferDecline': {
+      s.favor = Math.min(10, s.favor + 1);
+      s.lastActions = appendAction(s.lastActions, 'wait');
+      message = pickDialogue('saOfferDecline', s.npcMood);
+      break;
+    }
+
     default:
       message = 'Nothing happens.';
   }
@@ -408,7 +464,9 @@ export function resolveAction(state, cardId, action) {
     s.phase = 'end';
   } else {
     s.phase = 'result';
-    s.pendingCards = generateCards(s);
+    const { cards: nextCards, offer: nextOffer } = generateCards(s);
+    s.pendingCards = nextCards;
+    s.pendingOffer = nextOffer;
   }
 
   return s;
@@ -421,6 +479,9 @@ export function resolveAction(state, cardId, action) {
 export function calculateScore(state) {
   const ITEM_SCORES = {
     twilly: 50, bracelet: 100, shoes: 75, kellyBelt: 200,
+    // Everyday bags (SA-offered)
+    evelyneTpm: 180, picotin18: 220, gardenParty: 200,
+    bolide: 320, roulis: 380, lindy26: 400,
     // Chapter bags — regular
     constance24: 350, kelly28: 600, birkin30: 900,
     // Chapter bags — mini (ultra-rare)

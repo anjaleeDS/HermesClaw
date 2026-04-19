@@ -180,6 +180,116 @@ function ConstanceIcon() {
   );
 }
 
+function EvelyneIcon() {
+  // Bucket bag with perforated body — signature H cutout and crossbody strap
+  return (
+    <svg width="52" height="52" viewBox="0 0 52 52" fill="none">
+      <path d="M10 20 L14 46 Q14 48 16 48 L36 48 Q38 48 38 46 L42 20 Z"
+            fill="#8B6914" stroke="#1a1a1a" strokeWidth="2" />
+      <rect x="8" y="16" width="36" height="6" rx="1"
+            fill="#7a5c10" stroke="#1a1a1a" strokeWidth="1.8" />
+      <circle cx="20" cy="30" r="2" fill="#6a4e0c" />
+      <circle cx="26" cy="30" r="2" fill="#6a4e0c" />
+      <circle cx="32" cy="30" r="2" fill="#6a4e0c" />
+      <circle cx="20" cy="38" r="2" fill="#6a4e0c" />
+      <circle cx="26" cy="38" r="2" fill="#6a4e0c" />
+      <circle cx="32" cy="38" r="2" fill="#6a4e0c" />
+      <path d="M10 18 Q2 12 4 4" stroke="#1a1a1a" strokeWidth="2.5" fill="none" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+function PicotinIcon() {
+  // Open wicker bucket with two small handles
+  return (
+    <svg width="52" height="52" viewBox="0 0 52 52" fill="none">
+      <path d="M10 22 Q10 48 26 48 Q42 48 42 22 Z"
+            fill="#c8a96e" stroke="#1a1a1a" strokeWidth="2" />
+      <path d="M12 30 Q26 28 40 30" stroke="#1a1a1a" strokeWidth="0.8" fill="none" opacity="0.5" />
+      <path d="M11 37 Q26 35 41 37" stroke="#1a1a1a" strokeWidth="0.8" fill="none" opacity="0.5" />
+      <path d="M12 44 Q26 42 40 44" stroke="#1a1a1a" strokeWidth="0.8" fill="none" opacity="0.5" />
+      <ellipse cx="26" cy="22" rx="16" ry="4"
+               fill="#b89a58" stroke="#1a1a1a" strokeWidth="1.8" />
+      <path d="M16 20 Q12 12 16 8 Q18 6 20 8 Q20 14 18 20"
+            stroke="#1a1a1a" strokeWidth="2" fill="none" strokeLinecap="round" />
+      <path d="M36 20 Q40 12 36 8 Q34 6 32 8 Q32 14 34 20"
+            stroke="#1a1a1a" strokeWidth="2" fill="none" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+function GardenPartyIcon() {
+  // Structured canvas tote with long handles and leather trim
+  return (
+    <svg width="52" height="52" viewBox="0 0 52 52" fill="none">
+      <path d="M8 26 L10 48 L42 48 L44 26 Z"
+            fill="#d4cfc6" stroke="#1a1a1a" strokeWidth="2" />
+      <rect x="10" y="44" width="32" height="4" rx="1"
+            fill="#b8a06a" stroke="#1a1a1a" strokeWidth="1.5" />
+      <line x1="16" y1="26" x2="14" y2="44" stroke="#b8b3aa" strokeWidth="0.8" />
+      <line x1="26" y1="26" x2="26" y2="44" stroke="#b8b3aa" strokeWidth="0.8" />
+      <line x1="36" y1="26" x2="38" y2="44" stroke="#b8b3aa" strokeWidth="0.8" />
+      <path d="M16 26 Q12 8 18 4 Q22 2 24 8 Q24 18 20 26"
+            stroke="#1a1a1a" strokeWidth="2.2" fill="none" strokeLinecap="round" />
+      <path d="M36 26 Q40 8 34 4 Q30 2 28 8 Q28 18 32 26"
+            stroke="#1a1a1a" strokeWidth="2.2" fill="none" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+function BolideIcon() {
+  // Rounded doctor bag with zipper and two short handles
+  return (
+    <svg width="52" height="52" viewBox="0 0 52 52" fill="none">
+      <path d="M10 28 Q8 48 26 48 Q44 48 42 28 Q40 18 26 18 Q12 18 10 28 Z"
+            fill="#2a4a3a" stroke="#1a1a1a" strokeWidth="2" />
+      <path d="M14 22 Q26 18 38 22" stroke="#D4AF6A" strokeWidth="1.5" fill="none" strokeLinecap="round" />
+      <rect x="23" y="19" width="6" height="4" rx="1"
+            fill="#D4AF6A" stroke="#1a1a1a" strokeWidth="1.2" />
+      <path d="M16 22 Q14 10 20 8 Q24 6 24 14 Q24 18 22 22"
+            stroke="#1a1a1a" strokeWidth="2.4" fill="none" strokeLinecap="round" />
+      <path d="M36 22 Q38 10 32 8 Q28 6 28 14 Q28 18 30 22"
+            stroke="#1a1a1a" strokeWidth="2.4" fill="none" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+function RoulisIcon() {
+  // Compact flap bag with prominent round turnlock and chain strap
+  return (
+    <svg width="52" height="52" viewBox="0 0 52 52" fill="none">
+      <rect x="12" y="24" width="28" height="24" rx="3"
+            fill="#1a1a2a" stroke="#1a1a1a" strokeWidth="2" />
+      <path d="M12 24 Q12 14 26 12 Q40 14 40 24 L40 30 Q30 26 22 30 Z"
+            fill="#14142a" stroke="#1a1a1a" strokeWidth="1.8" />
+      <circle cx="26" cy="30" r="7"
+              fill="#D4AF6A" stroke="#1a1a1a" strokeWidth="2" />
+      <circle cx="26" cy="30" r="3"
+              fill="#b8960a" stroke="#1a1a1a" strokeWidth="1" />
+      <path d="M12 28 Q4 24 6 16 Q8 10 12 14"
+            stroke="#D4AF6A" strokeWidth="1.5" fill="none" strokeDasharray="2 1" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+function LindyIcon() {
+  // Cylindrical silhouette with fold-over top and two handles
+  return (
+    <svg width="52" height="52" viewBox="0 0 52 52" fill="none">
+      <rect x="10" y="22" width="32" height="26" rx="3"
+            fill="#6b3a2a" stroke="#1a1a1a" strokeWidth="2" />
+      <path d="M10 22 Q10 16 26 16 Q42 16 42 22 L42 28 Q30 24 22 28 Z"
+            fill="#5a3020" stroke="#1a1a1a" strokeWidth="1.8" />
+      <path d="M16 22 Q12 12 18 8 Q22 6 22 14 Q22 18 20 22"
+            stroke="#1a1a1a" strokeWidth="2.4" fill="none" strokeLinecap="round" />
+      <path d="M36 22 Q40 12 34 8 Q30 6 30 14 Q30 18 32 22"
+            stroke="#1a1a1a" strokeWidth="2.4" fill="none" strokeLinecap="round" />
+      <ellipse cx="26" cy="30" rx="5" ry="3.5"
+               fill="#D4AF6A" stroke="#1a1a1a" strokeWidth="1.5" />
+    </svg>
+  );
+}
+
 // ─────────────────────────────────────────────
 // ITEM CONFIG — slot order, icons, empty state
 // ─────────────────────────────────────────────
@@ -190,6 +300,13 @@ const SHELF_ITEMS = [
   { id: 'bracelet',      Icon: BraceletIcon,  label: 'Bracelet',       bg: '#fdf9f0' },
   { id: 'shoes',         Icon: ShoesIcon,     label: 'Shoes',          bg: '#f8f7f5' },
   { id: 'kellyBelt',     Icon: KellyBeltIcon, label: 'Kelly Belt',     bg: '#fdf9f0' },
+  // Everyday bags (SA-offered)
+  { id: 'evelyneTpm',    Icon: EvelyneIcon,      label: 'Evelyne TPM',       bg: '#fdf6e8' },
+  { id: 'picotin18',     Icon: PicotinIcon,      label: 'Picotin 18',        bg: '#fdf6e0' },
+  { id: 'gardenParty',   Icon: GardenPartyIcon,  label: 'Garden Party 36',   bg: '#f8f7f5' },
+  { id: 'bolide',        Icon: BolideIcon,       label: 'Bolide 1923 Mini',  bg: '#f2f5f4' },
+  { id: 'roulis',        Icon: RoulisIcon,       label: 'Roulis Mini',       bg: '#f5f0f8' },
+  { id: 'lindy26',       Icon: LindyIcon,        label: 'Lindy 26',          bg: '#fdf3ee' },
   // Chapter 0 bags
   { id: 'constance24',   Icon: ConstanceIcon, label: 'Constance 24',   bg: '#fdf9f0' },
   { id: 'constanceMini', Icon: ConstanceIcon, label: 'Constance Mini', bg: '#fdf9f0', mini: true },

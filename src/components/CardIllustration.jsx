@@ -160,6 +160,32 @@ function ColdShoulder() {
   );
 }
 
+function SaOffer() {
+  // Hangtag with ribbon — the SA discreetly presents something
+  return (
+    <svg width="100%" height="100%" viewBox="0 0 120 90" fill="none">
+      {/* Ribbon from top */}
+      <path d="M60 8 Q60 20 60 28" stroke="#b8a06a" strokeWidth="1.5" strokeDasharray="3 2" strokeLinecap="round" />
+      {/* Tag body */}
+      <rect x="32" y="28" width="56" height="50" rx="3"
+            fill="#f5f0e8" stroke="#1a1a1a" strokeWidth="2" />
+      {/* Hole at top of tag */}
+      <circle cx="60" cy="30" r="3.5" fill="white" stroke="#1a1a1a" strokeWidth="1.5" />
+      {/* Tag top fold shadow */}
+      <rect x="32" y="28" width="56" height="10" rx="3"
+            fill="#ede8e0" stroke="#1a1a1a" strokeWidth="2" />
+      {/* Bag silhouette on tag */}
+      <path d="M46 62 L44 52 Q44 50 46 50 L74 50 Q76 50 76 52 L74 62 Z"
+            fill="#e8601c" opacity="0.85" stroke="#1a1a1a" strokeWidth="1.5" />
+      <path d="M52 50 Q52 44 60 42 Q68 44 68 50"
+            stroke="#1a1a1a" strokeWidth="1.8" fill="none" strokeLinecap="round" />
+      {/* Price line — suggests a label */}
+      <rect x="40" y="66" width="40" height="5" rx="2" fill="#d4cfc6" opacity="0.6" />
+      <rect x="44" y="73" width="28" height="4" rx="2" fill="#d4cfc6" opacity="0.4" />
+    </svg>
+  );
+}
+
 // Map card type → illustration component
 const ILLUSTRATIONS = {
   boutiqueVisit:    BoutiqueVisit,
@@ -168,6 +194,7 @@ const ILLUSTRATIONS = {
   secondaryMarket:  SecondaryMarket,
   luckyMoment:      LuckyMoment,
   coldShoulder:     ColdShoulder,
+  saOffer:          SaOffer,
 };
 
 // Background tints per card type
@@ -178,6 +205,7 @@ const BG_TINTS = {
   secondaryMarket: '#fdf9f0',
   luckyMoment:     '#fff8f3',
   coldShoulder:    '#faf5f5',
+  saOffer:         '#fdf9f0',
 };
 
 export default function CardIllustration({ cardType }) {
