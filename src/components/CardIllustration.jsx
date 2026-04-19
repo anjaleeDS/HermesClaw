@@ -29,34 +29,30 @@ function BoutiqueVisit() {
 }
 
 function TalkToAssociate() {
-  // Elegant face — the associate
+  // Two speech bubbles — the conversation, not the person
   return (
     <svg width="100%" height="100%" viewBox="0 0 120 90" fill="none">
-      {/* Background circle */}
-      <circle cx="60" cy="48" r="34" fill="#1a1a1a" opacity="0.06" />
-      {/* Hair */}
-      <ellipse cx="60" cy="34" rx="22" ry="20" fill="#2a2a2a" />
-      {/* Face */}
-      <ellipse cx="60" cy="50" rx="17" ry="19" fill="#e8d5bf" />
-      {/* Eyes */}
-      <ellipse cx="53" cy="46" rx="3" ry="2" fill="#2a2a2a" />
-      <ellipse cx="67" cy="46" rx="3" ry="2" fill="#2a2a2a" />
-      <circle cx="54" cy="45.3" r="0.8" fill="white" />
-      <circle cx="68" cy="45.3" r="0.8" fill="white" />
-      {/* Eyebrows */}
-      <path d="M49 41 Q53 38 57 40" stroke="#2a2a2a" strokeWidth="1.2" strokeLinecap="round" />
-      <path d="M63 40 Q67 38 71 41" stroke="#2a2a2a" strokeWidth="1.2" strokeLinecap="round" />
-      {/* Nose */}
-      <path d="M60 50 Q58 54 56 55 Q59 57 63 55 Q62 54 60 50"
-            stroke="#c4a882" strokeWidth="0.7" fill="none" />
-      {/* Neutral/slight smile */}
-      <path d="M53 59 Q60 63 67 59" stroke="#2a2a2a" strokeWidth="1.4" strokeLinecap="round" fill="none" />
-      {/* Collar */}
-      <path d="M30 88 L43 70 L60 76 L77 70 L90 88 Z" fill="#2a2a2a" />
-      <path d="M53 70 L60 78 L67 70" stroke="#4a4a4a" strokeWidth="0.8" fill="none" />
-      {/* Pearl earrings */}
-      <circle cx="43" cy="56" r="2.5" fill="#f5f0e8" stroke="#d4cfc6" strokeWidth="0.5" />
-      <circle cx="77" cy="56" r="2.5" fill="#f5f0e8" stroke="#d4cfc6" strokeWidth="0.5" />
+      {/* Large bubble — her voice */}
+      <rect x="18" y="12" width="62" height="36" rx="8"
+            fill="#f5f0e8" stroke="#1a1a1a" strokeWidth="2.2" />
+      {/* Bubble tail — points down-left (her side) */}
+      <path d="M30 48 L22 62 L44 48 Z"
+            fill="#f5f0e8" stroke="#1a1a1a" strokeWidth="2.2"
+            strokeLinejoin="round" />
+      {/* Ellipsis inside — she's considering */}
+      <circle cx="38" cy="30" r="3.5" fill="#1a1a1a" opacity="0.18" />
+      <circle cx="52" cy="30" r="3.5" fill="#1a1a1a" opacity="0.18" />
+      <circle cx="66" cy="30" r="3.5" fill="#1a1a1a" opacity="0.18" />
+      {/* Small bubble — your reply */}
+      <rect x="52" y="54" width="46" height="26" rx="7"
+            fill="#e8601c" stroke="#1a1a1a" strokeWidth="2" />
+      {/* Bubble tail — points up-right (your side) */}
+      <path d="M86 54 L96 44 L72 54 Z"
+            fill="#e8601c" stroke="#1a1a1a" strokeWidth="2"
+            strokeLinejoin="round" />
+      {/* Dash inside — waiting, listening */}
+      <rect x="66" y="64" width="24" height="3" rx="1.5"
+            fill="#fff" opacity="0.7" />
     </svg>
   );
 }
@@ -138,30 +134,28 @@ function LuckyMoment() {
 }
 
 function ColdShoulder() {
-  // Figure turning away — rejection
+  // Closed door — shut out
   return (
     <svg width="100%" height="100%" viewBox="0 0 120 90" fill="none">
-      {/* Figure — back turned, 3/4 view */}
-      {/* Head from behind */}
-      <ellipse cx="62" cy="28" rx="16" ry="17" fill="#2a2a2a" />
-      {/* Hair sweep — back of head visible */}
-      <path d="M46 28 Q50 12 62 10 Q74 12 78 28" fill="#1a1a1a" />
-      {/* Neck */}
-      <rect x="57" y="43" width="10" height="9" fill="#e8d5bf" />
-      {/* Turned body */}
-      <path d="M34 88 L46 62 L57 68 L62 64 L78 58 L88 88 Z" fill="#2a2a2a" />
-      {/* Shoulder line — turned away */}
-      <path d="M46 62 Q52 56 78 58" stroke="#4a4a4a" strokeWidth="1" fill="none" />
-      {/* Ice crystal — cold */}
-      <line x1="22" y1="20" x2="22" y2="40" stroke="#8b2e2e" strokeWidth="1.5" />
-      <line x1="14" y1="30" x2="30" y2="30" stroke="#8b2e2e" strokeWidth="1.5" />
-      <line x1="15" y1="23" x2="29" y2="37" stroke="#8b2e2e" strokeWidth="1" opacity="0.7" />
-      <line x1="29" y1="23" x2="15" y2="37" stroke="#8b2e2e" strokeWidth="1" opacity="0.7" />
-      {/* Snowflake dots */}
-      <circle cx="22" cy="18" r="1.5" fill="#8b2e2e" />
-      <circle cx="22" cy="42" r="1.5" fill="#8b2e2e" />
-      <circle cx="12" cy="30" r="1.5" fill="#8b2e2e" />
-      <circle cx="32" cy="30" r="1.5" fill="#8b2e2e" />
+      {/* Door frame */}
+      <rect x="28" y="8" width="64" height="76" rx="2"
+            fill="none" stroke="#1a1a1a" strokeWidth="2.2" />
+      {/* Door panel */}
+      <rect x="34" y="14" width="52" height="64" rx="1"
+            fill="#f5f0e8" stroke="#1a1a1a" strokeWidth="2" />
+      {/* Upper panel inset */}
+      <rect x="40" y="20" width="40" height="22" rx="1"
+            fill="none" stroke="#d4cfc6" strokeWidth="1.2" />
+      {/* Lower panel inset */}
+      <rect x="40" y="48" width="40" height="22" rx="1"
+            fill="none" stroke="#d4cfc6" strokeWidth="1.2" />
+      {/* Door knob */}
+      <circle cx="76" cy="46" r="4.5"
+              fill="#D4AF6A" stroke="#1a1a1a" strokeWidth="1.8" />
+      <circle cx="76" cy="46" r="1.8" fill="#1a1a1a" opacity="0.3" />
+      {/* Red X — not today */}
+      <line x1="14" y1="62" x2="26" y2="74" stroke="#8b2e2e" strokeWidth="2.5" strokeLinecap="round" />
+      <line x1="26" y1="62" x2="14" y2="74" stroke="#8b2e2e" strokeWidth="2.5" strokeLinecap="round" />
     </svg>
   );
 }
