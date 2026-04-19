@@ -66,6 +66,7 @@ export default function App() {
           onContinue={handleContinue}
           turn={game.turn}
           chapter={game.chapter ?? 0}
+          runCount={game.runCount ?? 0}
         />
       ) : (
         <>

@@ -562,6 +562,52 @@
 }
 
 /* ─────────────────────────────────────────────
+   BAG PHOTO REVEAL
+───────────────────────────────────────────── */
+.bag-photo-wrap {
+  border: 1px solid var(--light-gray);
+  overflow: hidden;
+  background: var(--cream);
+}
+
+.bag-photo-reveal {
+  width: 100%;
+  height: 220px;
+  display: block;
+}
+
+.bag-photo-caption {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  padding: 14px 18px;
+  border-top: 1px solid var(--light-gray);
+  background: var(--warm-white);
+}
+
+.bag-photo-label {
+  font-size: 9px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--orange);
+  font-family: var(--font-mono);
+  flex-shrink: 0;
+}
+
+.bag-photo-name {
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--charcoal);
+}
+
+.bag-photo-desc {
+  font-size: 13px;
+  font-style: italic;
+  color: var(--mid-gray);
+}
+
+/* ─────────────────────────────────────────────
    RESULT MOMENT
 ───────────────────────────────────────────── */
 .result-moment {
