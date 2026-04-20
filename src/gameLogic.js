@@ -421,6 +421,7 @@ export function resolveAction(state, cardId, action) {
     }
 
     case 'saOfferBuy': {
+      isBuyAction = true;
       const itemId = s.currentOffer;
       const item = ITEMS[itemId];
       if (!itemId || !item || s.inventory.includes(itemId)) {
@@ -466,7 +467,8 @@ export function resolveAction(state, cardId, action) {
   }
 
   // itemSynergy: owning 2+ items + social action = occasional observation
-  if (s.inventory.length >= 2 && isSocialAction && Math.random() < 0.4 && s.npcMood !== 'cold') {
+  // Gated on suspicion <= 2 so it is not silently overridden by suspicionBuilding
+  if (s.inventory.length >= 2 && isSocialAction && s.suspicion <= 2 && Math.random() < 0.4 && s.npcMood !== 'cold') {
     message = pickDialogue('itemSynergy', s.npcMood);
   }
 

@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Bodoni+Moda:ital,opsz,wght@0,6..96,300;0,6..96,400;1,6..96,300;1,6..96,400&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: #1c1830;
+    color: #f0eadc;
+    font-size: 15px;
+    padding: 24px;
+    min-height: 100vh;
+  }
+
+  h2 { font-size: 22px; font-weight: normal; color: #c8c0e8; margin-bottom: 6px; font-family: sans-serif; }
+  .subtitle { font-size: 13px; color: #6666aa; margin-bottom: 24px; font-family: sans-serif; }
+
+  .row {
+    display: flex;
+    gap: 18px;
+    flex-wrap: wrap;
+  }
+
+  .option-wrap {
+    flex: 1;
+    min-width: 240px;
+    border-radius: 10px;
+    overflow: hidden;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: border-color 0.2s, transform 0.15s;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.5);
+    background: #16132a;
+  }
+  .option-wrap:hover { transform: translateY(-2px); }
+  .option-wrap.selected { border-color: #fff !important; }
+
+  .opt-meta { padding: 12px 16px 4px; display: flex; justify-content: space-between; align-items: baseline; font-family: sans-serif; }
+  .opt-letter { font-size: 20px; font-weight: bold; color: #c8c0e8; }
+  .opt-name { font-size: 12px; font-weight: bold; color: #c8c0e8; }
+  .opt-note { font-size: 10px; color: #6666aa; font-family: sans-serif; padding: 0 16px 12px; }
+
+  .preview {
+    background: #1c1830;
+    border-top: 1px solid #2e2a48;
+    padding: 16px;
+  }
+
+  /* Header row */
+  .p-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    border-bottom: 1px solid #2e2a48;
+    padding-bottom: 10px;
+    margin-bottom: 14px;
+  }
+  .p-money { font-family: monospace; color: #D4AF6A; font-size: 14px; }
+  .p-turn { font-size: 11px; color: #6666aa; font-family: monospace; }
+
+  /* NPC dialogue */
+  .p-dialogue {
+    background: #f5f0e8;
+    border: 1px solid #ddd4c0;
+    border-left: 3px solid #b8a06a;
+    padding: 10px 14px;
+    margin-bottom: 12px;
+  }
+  .p-npc-label { font-size: 9px; letter-spacing: 0.22em; text-transform: uppercase; color: #6b6b6b; margin-bottom: 5px; font-family: monospace; }
+
+  /* Card -->
+  .p-card {
+    background: #f5f0e8;
+    border: 1px solid #ddd4c0;
+    padding: 10px 12px;
+    margin-bottom: 8px;
+  }
+  .p-card-label { font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: #6b6b6b; margin-bottom: 3px; font-family: monospace; }
+
+  /* Intro title sample */
+  .p-title-sample {
+    text-align: center;
+    border-top: 1px solid #2e2a48;
+    padding-top: 14px;
+    margin-top: 12px;
+  }
+  .p-eyebrow { font-size: 9px; letter-spacing: 0.3em; text-transform: uppercase; color: #6666aa; margin-bottom: 8px; font-family: monospace; }
+
+  /* Font-specific classes */
+  .f-cormorant { font-family: 'Cormorant Garamond', Georgia, serif; }
+  .f-playfair  { font-family: 'Playfair Display', Georgia, serif; }
+  .f-bodoni    { font-family: 'Bodoni Moda', Georgia, serif; }
+
+  /* score samples */
+  .p-score { font-size: 52px; font-weight: 300; color: #f0eadc; line-height: 1; }
+</style>
+<script>
+function toggleSelect(el) {
+  const wrap = el.closest('.option-wrap');
+  const parent = wrap.closest('.row');
+  parent.querySelectorAll('.option-wrap').forEach(e => e.classList.remove('selected'));
+  wrap.classList.toggle('selected');
+}
+</script>
+</head>
+<body>
+
+<h2>Typography</h2>
+<p class="subtitle">Same game text, three serif options — each is available free on Google Fonts</p>
+
+<div class="row">
+
+  <!-- A: Cormorant Garamond (current) -->
+  <div class="option-wrap" onclick="toggleSelect(this)">
+    <div class="opt-meta"><span class="opt-letter">A</span><span class="opt-name">Cormorant Garamond</span></div>
+    <p class="opt-note">Current font. Elegant, slightly loose, low contrast.</p>
+    <div class="preview f-cormorant">
+      <div class="p-header">
+        <span class="p-money">$5,000</span>
+        <span style="font-size:12px; letter-spacing:0.25em; text-transform:uppercase; color:#6666aa;">Hermès Claw</span>
+        <span class="p-turn">Turn 3/10</span>
+      </div>
+      <div class="p-dialogue">
+        <div class="p-npc-label">Associate · Warm</div>
+        <div style="font-size:18px; font-style:italic; font-weight:300; color:#1a1a1a; line-height:1.5;">"I have something set aside.<br>For the right client."</div>
+      </div>
+      <div class="p-card">
+        <div class="p-card-label">Quiet Moment</div>
+        <div style="font-size:14px; color:#1a1a1a;">She turns away briefly. Now or never.</div>
+      </div>
+      <div class="p-title-sample">
+        <div class="p-eyebrow">A Hermès Fable</div>
+        <div class="p-score f-cormorant">Hermès<br>Claw</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- B: Playfair Display -->
+  <div class="option-wrap" onclick="toggleSelect(this)">
+    <div class="opt-meta"><span class="opt-letter">B</span><span class="opt-name">Playfair Display</span></div>
+    <p class="opt-note">High contrast, strong serifs. Editorial, slightly more dramatic.</p>
+    <div class="preview f-playfair">
+      <div class="p-header">
+        <span class="p-money">$5,000</span>
+        <span style="font-size:12px; letter-spacing:0.25em; text-transform:uppercase; color:#6666aa; font-family:monospace;">Hermès Claw</span>
+        <span class="p-turn">Turn 3/10</span>
+      </div>
+      <div class="p-dialogue">
+        <div class="p-npc-label">Associate · Warm</div>
+        <div style="font-size:17px; font-style:italic; font-weight:400; color:#1a1a1a; line-height:1.5;">"I have something set aside.<br>For the right client."</div>
+      </div>
+      <div class="p-card">
+        <div class="p-card-label">Quiet Moment</div>
+        <div style="font-size:13px; color:#1a1a1a;">She turns away briefly. Now or never.</div>
+      </div>
+      <div class="p-title-sample">
+        <div class="p-eyebrow">A Hermès Fable</div>
+        <div class="p-score f-playfair">Hermès<br>Claw</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- C: Bodoni Moda -->
+  <div class="option-wrap" onclick="toggleSelect(this)">
+    <div class="opt-meta"><span class="opt-letter">C</span><span class="opt-name">Bodoni Moda</span></div>
+    <p class="opt-note">Closest to Hermès Didot. Dramatic thin/thick contrast, very refined.</p>
+    <div class="preview f-bodoni">
+      <div class="p-header">
+        <span class="p-money">$5,000</span>
+        <span style="font-size:12px; letter-spacing:0.25em; text-transform:uppercase; color:#6666aa; font-family:monospace;">Hermès Claw</span>
+        <span class="p-turn">Turn 3/10</span>
+      </div>
+      <div class="p-dialogue">
+        <div class="p-npc-label">Associate · Warm</div>
+        <div style="font-size:17px; font-style:italic; font-weight:300; color:#1a1a1a; line-height:1.5;">"I have something set aside.<br>For the right client."</div>
+      </div>
+      <div class="p-card">
+        <div class="p-card-label">Quiet Moment</div>
+        <div style="font-size:13px; color:#1a1a1a;">She turns away briefly. Now or never.</div>
+      </div>
+      <div class="p-title-sample">
+        <div class="p-eyebrow">A Hermès Fable</div>
+        <div class="p-score f-bodoni">Hermès<br>Claw</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

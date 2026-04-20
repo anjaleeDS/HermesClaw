@@ -187,14 +187,6 @@ export const NPC_DIALOGUE = {
     'I\'m afraid I\'m rather occupied.',
     'Mm.',
   ],
-  afterBuy: [
-    'A very good choice.',
-    'That suits you.',
-    'Mm. Yes.',
-    'You have a good eye.',
-    'I\'ll have that wrapped.',
-    'Our clients do tend to return to that one.',
-  ],
   afterAsk: [
     'That particular piece has a process.',
     'I wouldn\'t want to mislead you about timing.',

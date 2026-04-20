@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: #1c1830;
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 15px;
+    color: #f0eadc;
+    padding: 0;
+  }
+
+  /* ── Layout ── */
+  .game-shell {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 28px 40px;
+  }
+
+  /* ── Header ── */
+  .game-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 22px 0 18px;
+    border-bottom: 1px solid #2e2a48;
+    margin-bottom: 24px;
+  }
+  .header-money { font-family: monospace; font-size: 16px; color: #D4AF6A; letter-spacing: 0.04em; }
+  .header-center { display: flex; flex-direction: column; align-items: center; gap: 2px; }
+  .header-title { font-size: 11px; letter-spacing: 0.35em; text-transform: uppercase; color: #6666aa; font-family: monospace; }
+  .header-target { font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: #e8601c; font-family: monospace; }
+  .header-turn { font-size: 12px; color: #6666aa; font-family: monospace; }
+
+  /* ── NPC Dialogue ── */
+  .npc-dialogue {
+    background: #f5f0e8;
+    border: 1px solid #ddd4c0;
+    border-left: 4px solid #e8601c;
+    margin-bottom: 28px;
+    display: flex;
+    overflow: hidden;
+  }
+  .npc-portrait-col {
+    flex-shrink: 0;
+    width: 110px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    padding: 10px 0 0;
+    border-right: 1px solid #ddd4c0;
+    background: #ede8df;
+  }
+  .npc-speech-col { flex: 1; padding: 18px 22px; }
+  .npc-header { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+  .npc-name { font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase; color: #3a3a3a; font-family: monospace; font-weight: 600; }
+  .npc-mood-tag {
+    font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase;
+    padding: 2px 7px; border: 1px solid #e8601c; color: #c04a10;
+    font-family: monospace;
+  }
+  .npc-message { font-size: 19px; font-style: italic; font-weight: 400; color: #1a1a1a; line-height: 1.5; }
+
+  /* ── Cards ── */
+  .your-move-label {
+    font-size: 9px; letter-spacing: 0.25em; text-transform: uppercase;
+    color: #6666aa; margin-bottom: 12px; font-family: monospace;
+  }
+  .card-row { display: flex; gap: 12px; margin-bottom: 28px; }
+  .event-card {
+    flex: 1;
+    background: #f5f0e8;
+    border: 1px solid #ddd4c0;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    cursor: pointer;
+  }
+  .event-card:hover { border-color: #1a1a1a; box-shadow: 0 2px 16px rgba(0,0,0,0.2); }
+  .card-context { padding: 18px 16px 14px; flex-shrink: 0; }
+  .card-title { font-size: 10px; letter-spacing: 0.2em; font-weight: 700; text-transform: uppercase; color: #1a1a1a; margin-bottom: 6px; font-family: monospace; }
+  .card-subtitle { font-size: 13px; font-style: italic; font-weight: 400; color: #6b6b6b; line-height: 1.45; }
+  .card-divider { height: 1px; background: #ddd4c0; }
+  .card-actions-label { font-size: 8px; letter-spacing: 0.22em; text-transform: uppercase; color: #6b6b6b; padding: 10px 16px 4px; font-family: monospace; }
+  .card-options { display: flex; flex-direction: column; gap: 0; padding: 0 10px 10px; }
+  .card-option {
+    background: none; border: 1px solid #ddd4c0; padding: 9px 12px;
+    font-family: 'Playfair Display', Georgia, serif; font-size: 13px; color: #1a1a1a;
+    cursor: pointer; text-align: left; margin-bottom: 5px;
+    transition: background 0.15s, color 0.15s, border-color 0.15s;
+  }
+  .card-option:hover { background: #1a1a1a; color: #f5f0e8; border-color: #1a1a1a; }
+  .card-option.highlight { border-color: #e8601c; color: #c04a10; }
+  .card-option.highlight:hover { background: #e8601c; color: #fff; border-color: #e8601c; }
+
+  /* ── Shelf ── */
+  .shelf-label { font-size: 9px; letter-spacing: 0.25em; text-transform: uppercase; color: #6666aa; margin-bottom: 10px; font-family: monospace; }
+  .shelf-surface { position: relative; }
+  .shelf-items { display: flex; gap: 8px; align-items: flex-end; padding-bottom: 10px; }
+  .shelf-slot {
+    flex: 1; max-width: 76px; border: 1px solid #ddd4c0;
+    display: flex; flex-direction: column; align-items: center;
+    justify-content: flex-end; padding: 6px 3px 5px; min-height: 72px;
+    background: #f5f0e8;
+  }
+  .shelf-slot--empty { background: rgba(245,240,232,0.08); opacity: 0.4; border-style: dashed; border-color: #3a3660; }
+  .shelf-slot--new { border-color: #e8601c !important; box-shadow: 0 0 0 2px #e8601c, 0 4px 16px rgba(232,96,28,0.3); }
+  .shelf-item-label { font-size: 8px; letter-spacing: 0.08em; text-transform: uppercase; color: #6b6b6b; text-align: center; margin-top: 3px; font-family: monospace; }
+
+  /* ── Section divider ── */
+  .section-title {
+    font-size: 10px; letter-spacing: 0.3em; text-transform: uppercase;
+    color: #6666aa; font-family: monospace; padding: 20px 0 10px;
+    border-top: 1px solid #2e2a48; margin-top: 20px;
+  }
+
+  /* ── Intro Screen ── */
+  .intro-screen {
+    min-height: 340px; display: flex; align-items: center; justify-content: center;
+    background: #1c1830; position: relative; overflow: hidden; padding: 24px;
+  }
+  .intro-screen::before {
+    content: 'H';
+    position: absolute; font-size: 380px; font-weight: 400;
+    color: rgba(212,175,106,0.055); line-height: 1;
+    top: 50%; left: 50%; transform: translate(-50%, -50%);
+    pointer-events: none; font-family: 'Playfair Display', serif;
+  }
+  .intro-inner { max-width: 420px; width: 100%; position: relative; z-index: 1; }
+  .intro-eyebrow { font-size: 9px; letter-spacing: 0.3em; text-transform: uppercase; color: #6666aa; margin-bottom: 12px; font-family: monospace; }
+  .intro-title { font-size: 52px; font-weight: 400; color: #f0eadc; line-height: 1; margin-bottom: 6px; letter-spacing: -0.01em; }
+  .intro-chapter { font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase; color: #e8601c; margin-bottom: 20px; font-family: monospace; }
+  .intro-premise {
+    font-size: 16px; font-style: italic; color: #9090c0; line-height: 1.6;
+    margin-bottom: 28px; border-left: 3px solid #3a3660; padding-left: 16px;
+  }
+  .intro-btn {
+    background: #e8601c; color: #fff; border: none; padding: 13px 40px;
+    font-family: 'Playfair Display', Georgia, serif; font-size: 12px;
+    letter-spacing: 0.2em; text-transform: uppercase; cursor: pointer; width: 100%;
+  }
+
+  /* ── End Screen ── */
+  .end-screen {
+    min-height: 300px; display: flex; align-items: center; justify-content: center;
+    background: #1c1830; position: relative; overflow: hidden; padding: 24px;
+  }
+  .end-screen::before {
+    content: 'H';
+    position: absolute; font-size: 380px; font-weight: 400;
+    color: rgba(212,175,106,0.055); line-height: 1;
+    top: 50%; left: 50%; transform: translate(-50%, -50%);
+    pointer-events: none; font-family: 'Playfair Display', serif;
+  }
+  .end-inner { max-width: 420px; width: 100%; position: relative; z-index: 1; text-align: center; }
+  .end-eyebrow { font-size: 9px; letter-spacing: 0.35em; text-transform: uppercase; color: #6666aa; margin-bottom: 16px; font-family: monospace; }
+  .end-score { font-size: 80px; font-weight: 400; color: #f0eadc; line-height: 1; margin-bottom: 14px; text-shadow: 0 0 40px rgba(212,175,106,0.25); }
+  .end-verdict { font-style: italic; font-size: 17px; color: #9090c0; margin-bottom: 24px; line-height: 1.6; }
+  .end-unlock {
+    border: 1px solid #e8601c; padding: 14px 18px; margin-bottom: 20px; text-align: left;
+  }
+  .end-unlock-label { display: block; font-size: 9px; letter-spacing: 0.25em; text-transform: uppercase; color: #e8601c; margin-bottom: 6px; font-family: monospace; }
+  .end-unlock-name { font-size: 20px; font-weight: 400; color: #f0eadc; }
+  .end-btn {
+    background: #1c1830; color: #f0eadc; border: 1px solid #4a4680; padding: 13px 40px;
+    font-family: 'Playfair Display', Georgia, serif; font-size: 12px;
+    letter-spacing: 0.2em; text-transform: uppercase; cursor: pointer; width: 100%;
+  }
+</style>
+</head>
+<body>
+
+<!-- ── GAMEPLAY SCREEN ── -->
+<div class="game-shell">
+  <div class="game-header">
+    <span class="header-money">$5,000</span>
+    <div class="header-center">
+      <span class="header-title">Hermès Claw</span>
+      <span class="header-target">Seeking: Constance 24</span>
+    </div>
+    <span class="header-turn">Turn 3 / 10</span>
+  </div>
+
+  <div class="npc-dialogue">
+    <div class="npc-portrait-col">
+      <!-- Placeholder portrait silhouette -->
+      <svg width="90" height="100" viewBox="0 0 90 100" fill="none">
+        <ellipse cx="45" cy="28" rx="18" ry="20" fill="#c8b89a"/>
+        <path d="M15 100 Q15 60 45 58 Q75 60 75 100Z" fill="#c8b89a"/>
+      </svg>
+    </div>
+    <div class="npc-speech-col">
+      <div class="npc-header">
+        <span class="npc-name">Associate</span>
+        <span class="npc-mood-tag">Warm</span>
+      </div>
+      <div class="npc-message">"I had a feeling you'd be in today."</div>
+    </div>
+  </div>
+
+  <div class="your-move-label">Your Move</div>
+  <div class="card-row">
+    <div class="event-card">
+      <div class="card-context">
+        <div class="card-title">The Quiet Moment</div>
+        <div class="card-subtitle">She pauses near the back room door.</div>
+      </div>
+      <div class="card-divider"></div>
+      <div class="card-actions-label">Choose an action</div>
+      <div class="card-options">
+        <button class="card-option">Ask to see what's inside</button>
+        <button class="card-option highlight">Wait. Let her come to you.</button>
+      </div>
+    </div>
+    <div class="event-card">
+      <div class="card-context">
+        <div class="card-title">Social Cue</div>
+        <div class="card-subtitle">She mentions a client who bought three last season.</div>
+      </div>
+      <div class="card-divider"></div>
+      <div class="card-actions-label">Choose an action</div>
+      <div class="card-options">
+        <button class="card-option">Mention your own collection</button>
+        <button class="card-option highlight">Buy something small, visibly</button>
+      </div>
+    </div>
+    <div class="event-card">
+      <div class="card-context">
+        <div class="card-title">The Offer</div>
+        <div class="card-subtitle">She slides a card across the counter. An allocation list.</div>
+      </div>
+      <div class="card-divider"></div>
+      <div class="card-actions-label">Choose an action</div>
+      <div class="card-options">
+        <button class="card-option highlight">Sign it immediately</button>
+        <button class="card-option">Take a moment to consider</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Shelf -->
+  <div class="shelf-label">Your Acquisitions</div>
+  <div class="shelf-surface">
+    <div class="shelf-items">
+      <!-- Twilly (owned) -->
+      <div class="shelf-slot">
+        <svg width="44" height="44" viewBox="0 0 52 52" fill="none">
+          <path d="M8 14 Q14 8 20 12 Q28 18 26 26 Q24 34 32 38 Q40 42 44 36 L46 34 Q44 40 38 36 Q30 32 32 24 Q34 16 26 10 Q20 6 14 10 Z" fill="#e8601c"/>
+          <path d="M8 14 Q14 8 20 12 Q28 18 26 26 Q24 34 32 38 Q40 42 44 36" stroke="#1a1a1a" strokeWidth="2.2" fill="none" strokeLinecap="round"/>
+          <path d="M14 10 Q20 6 26 10 Q34 16 32 24 Q30 32 38 36 Q44 40 46 34" stroke="#1a1a1a" strokeWidth="2.2" fill="none" strokeLinecap="round"/>
+        </svg>
+        <div class="shelf-item-label">Twilly</div>
+      </div>
+      <!-- Empty slots -->
+      <div class="shelf-slot shelf-slot--empty"></div>
+      <div class="shelf-slot shelf-slot--empty"></div>
+      <div class="shelf-slot shelf-slot--empty"></div>
+      <!-- Constance (new!) -->
+      <div class="shelf-slot shelf-slot--new">
+        <svg width="44" height="44" viewBox="0 0 52 60" fill="none">
+          <rect x="9" y="20" width="34" height="32" rx="2" fill="#b8820a" stroke="#1a1a1a" strokeWidth="2.2"/>
+          <rect x="9" y="20" width="34" height="16" rx="2" fill="#9a6e08" stroke="#1a1a1a" strokeWidth="2"/>
+          <path d="M9 30 Q2 24 4 13 Q6 6 13 8 Q18 10 16 20" stroke="#1a1a1a" strokeWidth="2.2" fill="none" strokeLinecap="round"/>
+          <rect x="19" y="31" width="14" height="11" rx="1" fill="#D4AF6A" stroke="#1a1a1a" strokeWidth="2"/>
+          <rect x="21" y="32.5" width="3" height="8" fill="#1a1a1a"/>
+          <rect x="28" y="32.5" width="3" height="8" fill="#1a1a1a"/>
+          <rect x="21" y="36" width="10" height="2.5" fill="#1a1a1a"/>
+        </svg>
+        <div class="shelf-item-label" style="color:#e8601c;">Constance 24</div>
+      </div>
+      <div class="shelf-slot shelf-slot--empty"></div>
+      <div class="shelf-slot shelf-slot--empty"></div>
+      <div class="shelf-slot shelf-slot--empty"></div>
+      <div class="shelf-slot shelf-slot--empty"></div>
+      <div class="shelf-slot shelf-slot--empty"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ── INTRO SCREEN ── -->
+<div style="border-top: 2px solid #2e2a48; padding-top: 0;">
+  <div style="padding: 10px 28px; background:#16132a;">
+    <span style="font-size:9px; letter-spacing:0.2em; text-transform:uppercase; color:#6666aa; font-family:monospace;">↓ Intro Screen</span>
+  </div>
+  <div class="intro-screen">
+    <div class="intro-inner">
+      <div class="intro-eyebrow">A Hermès Fable</div>
+      <div class="intro-title">Hermès<br>Claw</div>
+      <div class="intro-chapter">Chapter I — The Constance</div>
+      <div class="intro-premise">"Ten visits. One chance. She decides everything."</div>
+      <button class="intro-btn">Enter the Boutique</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── END SCREEN ── -->
+<div style="border-top: 2px solid #2e2a48; padding-top: 0;">
+  <div style="padding: 10px 28px; background:#16132a;">
+    <span style="font-size:9px; letter-spacing:0.2em; text-transform:uppercase; color:#6666aa; font-family:monospace;">↓ End Screen</span>
+  </div>
+  <div class="end-screen">
+    <div class="end-inner">
+      <div class="end-eyebrow">Run Complete</div>
+      <div class="end-score">8,400</div>
+      <div class="end-verdict">"You understood the game. She noticed."</div>
+      <div class="end-unlock">
+        <span class="end-unlock-label">Chapter Unlocked</span>
+        <span class="end-unlock-name">The Kelly</span>
+      </div>
+      <button class="end-btn">Play Again</button>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

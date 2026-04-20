@@ -488,3 +488,54 @@ describe('V2 — startGame chapterAware opening', () => {
     expect(pool).toContain(started.lastNPCMessage);
   });
 });
+
+describe('V2 — itemSynergy trigger', () => {
+  it('itemSynergy fires on social action with 2+ items and low suspicion', () => {
+    vi.spyOn(Math, 'random').mockReturnValue(0.1); // below 0.4 threshold
+    const state = createMockState({ inventory: ['twilly', 'bracelet'], suspicion: 0, favor: 3 });
+    const result = resolveAction(state, 'card-0', 'chat');
+    const pool = [
+      "The scarf and the belt together — that's not an accident. You planned this.",
+      'I notice you have the Twilly. The Kelly would complete that story.',
+      'Someone who understands the belt already understands what comes next.',
+      "The way you wear these things — it's consistent. That matters here.",
+      "Your eye is getting sharper. I've been watching.",
+      "You know, the bracelet reads differently with what you've chosen. It's working.",
+      "I don't say this to everyone — but you're building something.",
+      'That combination is very specific. Very you. I respect that.',
+    ];
+    expect(pool).toContain(result.lastNPCMessage);
+    vi.restoreAllMocks();
+  });
+
+  it('itemSynergy does not fire when suspicion is elevated (3+)', () => {
+    vi.spyOn(Math, 'random').mockReturnValue(0.1); // would trigger if not gated
+    const state = createMockState({ inventory: ['twilly', 'bracelet'], suspicion: 3, favor: 3 });
+    const result = resolveAction(state, 'card-0', 'chat');
+    const itemSynergyPool = [
+      "The scarf and the belt together — that's not an accident. You planned this.",
+      'I notice you have the Twilly. The Kelly would complete that story.',
+      'Someone who understands the belt already understands what comes next.',
+      "The way you wear these things — it's consistent. That matters here.",
+      "Your eye is getting sharper. I've been watching.",
+      "You know, the bracelet reads differently with what you've chosen. It's working.",
+      "I don't say this to everyone — but you're building something.",
+      'That combination is very specific. Very you. I respect that.',
+    ];
+    // suspicionBuilding fires instead at suspicion 3
+    expect(itemSynergyPool).not.toContain(result.lastNPCMessage);
+    vi.restoreAllMocks();
+  });
+
+  it('itemSynergy does not fire with only 1 item', () => {
+    vi.spyOn(Math, 'random').mockReturnValue(0.1);
+    const state = createMockState({ inventory: ['twilly'], suspicion: 0, favor: 3 });
+    const result = resolveAction(state, 'card-0', 'chat');
+    const pool = [
+      "The scarf and the belt together — that's not an accident. You planned this.",
+      'Someone who understands the belt already understands what comes next.',
+    ];
+    expect(pool).not.toContain(result.lastNPCMessage);
+    vi.restoreAllMocks();
+  });
+});

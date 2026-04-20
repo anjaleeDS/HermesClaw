@@ -27,7 +27,7 @@ src/__tests__/
 └── fixtures.js             # Reusable test helpers
 ```
 
-**Total: 67 passing tests**
+**Total: 67+ passing tests** (count grows as V2 tests are added)
 
 ---
 
@@ -80,9 +80,12 @@ src/__tests__/
 
 - All items have required properties (id, name, description, score)
 - Chapter target bags defined and accessible
-- Accessory scores correct (twilly=50, bracelet=100, shoes=75, kellyBelt=200)
+- Accessory scores correct (twilly=50, scarfCarre=125, bracelet=100, shoes=75, kellyBelt=200)
 - Mini variants have higher scores than regular bags
 - NPC dialogue organized by mood (warm, neutral, cold)
+- `scarfCarre` item exists with correct fields and `wardrobeDepth` effect
+- All 8 new V2 dialogue pools exist and are non-empty
+- `talkToAssociate` card has `outfitChat` action option
 - No duplicate item IDs
 - Data consistency across modules
 
@@ -319,6 +322,28 @@ Gives you interactive debugging with line-by-line execution.
 2. Verify localStorage mocking in persistence tests
 3. Ensure no timezone/locale dependencies
 4. Run `npm test -- --run` to get consistent results
+
+---
+
+## V2 Tests (written in plan, not yet implemented)
+
+The V2 implementation plan (`docs/superpowers/plans/2026-04-19-v2-gameplay-overhaul.md`) includes full TDD test blocks for:
+
+- `createInitialState` starts with $10,000 and `saOfferCount: 0`
+- SA offer cap at 3 per run (`saOfferCount >= 3` → no offer card)
+- `saOfferBuy` / `saOfferDecline` increment `saOfferCount`
+- `buySmall` uses `afterBuySmall` pool; `buyMedium` uses `afterBuyMedium`
+- `compliment` uses `complimentReturn` pool
+- `outfitChat` gives +1 favor (+2 with `scarfCarre`)
+- `outfitChat` adds no suspicion
+- `scarfCarre` drops from `buySmall` (after Twilly, before Bracelet)
+- `suspicionBuilding` fires at suspicion 3–4
+- `startGame` uses `chapterAware_ch1` / `chapterAware_ch2` opening pools
+- `DEFAULT_PROFILE` has `standing` and `progress` fields
+- Three-path chapter continuity (Path A/B/C advance conditions)
+- Chapter never advances beyond 2
+
+These tests are written in the plan and can be copy-pasted directly into the test files as part of V2 implementation.
 
 ---
 

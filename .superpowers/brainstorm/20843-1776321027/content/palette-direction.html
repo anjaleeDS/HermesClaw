@@ -1,0 +1,312 @@
+<h2>Palette Direction</h2>
+<p class="subtitle">Same game, three interpretations of "Balatro aesthetic" — pick the tone that feels right</p>
+
+<style>
+  .palette-cards {
+    display: flex;
+    gap: 18px;
+    margin-top: 24px;
+    flex-wrap: wrap;
+  }
+  .palette-card {
+    flex: 1;
+    min-width: 240px;
+    border-radius: 10px;
+    overflow: hidden;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: border-color 0.2s, transform 0.15s;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.35);
+  }
+  .palette-card:hover { transform: translateY(-3px); }
+  .palette-card.selected { border-color: #fff !important; }
+
+  /* ── A: NEON VELVET ── */
+  .nv { background: #0d0d12; }
+  .nv .p-header {
+    background: #0d0d12;
+    border-bottom: 1px solid #2a2a3a;
+    padding: 14px 18px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .nv .p-money { font-family: monospace; color: #FFD166; font-size: 15px; font-weight: bold; letter-spacing: 0.05em; }
+  .nv .p-title { font-size: 11px; letter-spacing: 0.3em; text-transform: uppercase; color: #6666aa; }
+  .nv .p-turn { font-size: 12px; color: #6666aa; }
+  .nv .p-dialogue {
+    margin: 12px 14px;
+    background: #13131e;
+    border: 1px solid #2a2a4a;
+    border-left: 3px solid #FFD166;
+    border-radius: 6px;
+    padding: 10px 14px;
+  }
+  .nv .p-npc-name { font-size: 9px; letter-spacing: 0.22em; text-transform: uppercase; color: #FFD166; margin-bottom: 5px; }
+  .nv .p-speech { font-style: italic; color: #c8c8e8; font-size: 13px; line-height: 1.5; }
+  .nv .p-cards { display: flex; gap: 8px; padding: 0 14px 14px; }
+  .nv .p-card {
+    flex: 1;
+    background: #13131e;
+    border: 1px solid #2a2a4a;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  .nv .p-card-top {
+    padding: 10px 10px 8px;
+    border-bottom: 1px solid #2a2a4a;
+  }
+  .nv .p-card-label { font-size: 8px; letter-spacing: 0.2em; text-transform: uppercase; color: #6666aa; }
+  .nv .p-card-title { font-size: 11px; color: #c8c8e8; margin-top: 3px; }
+  .nv .p-card-btn {
+    display: block;
+    width: calc(100% - 16px);
+    margin: 8px;
+    padding: 7px 8px;
+    background: #1a1a2e;
+    border: 1px solid #3a3a6a;
+    border-radius: 4px;
+    color: #9999cc;
+    font-size: 10px;
+    cursor: pointer;
+  }
+  .nv .p-card-btn:last-child { border-color: #FFD166; color: #FFD166; background: rgba(255,209,102,0.08); }
+  .nv .p-label { color: #6666aa; font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; margin: 0 14px 6px; }
+
+  /* ── B: NOIR LUXE ── */
+  .nl { background: #111117; }
+  .nl .p-header {
+    background: #111117;
+    border-bottom: 1px solid #222230;
+    padding: 14px 18px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .nl .p-money { font-family: monospace; color: #C9A84C; font-size: 15px; letter-spacing: 0.05em; }
+  .nl .p-title { font-size: 11px; letter-spacing: 0.3em; text-transform: uppercase; color: #555566; }
+  .nl .p-turn { font-size: 12px; color: #555566; }
+  .nl .p-dialogue {
+    margin: 12px 14px;
+    background: #18181f;
+    border: 1px solid #2a2a38;
+    border-left: 3px solid #C9A84C;
+    border-radius: 0;
+    padding: 10px 14px;
+  }
+  .nl .p-npc-name { font-size: 9px; letter-spacing: 0.22em; text-transform: uppercase; color: #C9A84C; margin-bottom: 5px; }
+  .nl .p-speech { font-style: italic; color: #b0b0c8; font-size: 13px; line-height: 1.5; }
+  .nl .p-cards { display: flex; gap: 8px; padding: 0 14px 14px; }
+  .nl .p-card {
+    flex: 1;
+    background: #18181f;
+    border: 1px solid #2a2a38;
+    border-radius: 0;
+    overflow: hidden;
+  }
+  .nl .p-card-top {
+    padding: 10px 10px 8px;
+    border-bottom: 1px solid #2a2a38;
+  }
+  .nl .p-card-label { font-size: 8px; letter-spacing: 0.2em; text-transform: uppercase; color: #555566; }
+  .nl .p-card-title { font-size: 11px; color: #b0b0c8; margin-top: 3px; }
+  .nl .p-card-btn {
+    display: block;
+    width: calc(100% - 16px);
+    margin: 8px;
+    padding: 7px 8px;
+    background: #1f1f28;
+    border: 1px solid #3a3a48;
+    border-radius: 0;
+    color: #888899;
+    font-size: 10px;
+    cursor: pointer;
+  }
+  .nl .p-card-btn:last-child { border-color: #C9A84C; color: #C9A84C; background: rgba(201,168,76,0.07); }
+  .nl .p-label { color: #555566; font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; margin: 0 14px 6px; }
+
+  /* ── C: HYBRID ── */
+  .hy { background: #0f0f14; }
+  .hy .p-header {
+    background: #0f0f14;
+    border-bottom: 1px solid #222230;
+    padding: 14px 18px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .hy .p-money { font-family: monospace; color: #E8D5A3; font-size: 15px; letter-spacing: 0.05em; }
+  .hy .p-title { font-size: 11px; letter-spacing: 0.3em; text-transform: uppercase; color: #8888aa; }
+  .hy .p-turn { font-size: 12px; color: #8888aa; }
+  .hy .p-dialogue {
+    margin: 12px 14px;
+    background: #f5f0e8;
+    border: 1px solid #ddd4c0;
+    border-left: 3px solid #b8a06a;
+    border-radius: 4px;
+    padding: 10px 14px;
+  }
+  .hy .p-npc-name { font-size: 9px; letter-spacing: 0.22em; text-transform: uppercase; color: #6b6b6b; margin-bottom: 5px; }
+  .hy .p-speech { font-style: italic; color: #1a1a1a; font-size: 13px; line-height: 1.5; }
+  .hy .p-cards { display: flex; gap: 8px; padding: 0 14px 14px; }
+  .hy .p-card {
+    flex: 1;
+    background: #f5f0e8;
+    border: 1px solid #ddd4c0;
+    border-radius: 6px;
+    overflow: hidden;
+  }
+  .hy .p-card-top {
+    padding: 10px 10px 8px;
+    border-bottom: 1px solid #ddd4c0;
+  }
+  .hy .p-card-label { font-size: 8px; letter-spacing: 0.2em; text-transform: uppercase; color: #6b6b6b; }
+  .hy .p-card-title { font-size: 11px; color: #1a1a1a; margin-top: 3px; }
+  .hy .p-card-btn {
+    display: block;
+    width: calc(100% - 16px);
+    margin: 8px;
+    padding: 7px 8px;
+    background: #fff;
+    border: 1px solid #ddd4c0;
+    border-radius: 3px;
+    color: #6b6b6b;
+    font-size: 10px;
+    cursor: pointer;
+  }
+  .hy .p-card-btn:last-child { border-color: #b8a06a; color: #9a7a3a; background: rgba(184,160,106,0.08); }
+  .hy .p-label { color: #8888aa; font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; margin: 0 14px 6px; }
+
+  /* Labels */
+  .option-label {
+    padding: 10px 14px 6px;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+  }
+  .opt-letter { font-size: 22px; font-weight: bold; }
+  .opt-name { font-size: 13px; font-weight: bold; }
+  .opt-tagline { font-size: 11px; opacity: 0.7; padding: 0 14px 12px; }
+  .nv .opt-letter, .nv .opt-name { color: #c8c8e8; }
+  .nv .opt-tagline { color: #6666aa; }
+  .nl .opt-letter, .nl .opt-name { color: #b0b0c8; }
+  .nl .opt-tagline { color: #555566; }
+  .hy .opt-letter { color: #E8D5A3; }
+  .hy .opt-name { color: #E8D5A3; }
+  .hy .opt-tagline { color: #8888aa; }
+</style>
+
+<div class="palette-cards">
+
+  <!-- Option A: Neon Velvet -->
+  <div class="palette-card nv" data-choice="a" onclick="toggleSelect(this)">
+    <div class="option-label">
+      <span class="opt-letter">A</span>
+      <span class="opt-name">Neon Velvet</span>
+    </div>
+    <p class="opt-tagline">True Balatro — dark void, neon gold, purple shadows</p>
+    <div class="p-header nv">
+      <span class="p-money">$5,000</span>
+      <span class="p-title">Hermès Claw</span>
+      <span class="p-turn">Turn 3/10</span>
+    </div>
+    <div class="p-dialogue nv">
+      <div class="p-npc-name">Associate · Warm</div>
+      <div class="p-speech">"I have something set aside. For the right client."</div>
+    </div>
+    <div class="p-label">Your move</div>
+    <div class="p-cards nv">
+      <div class="p-card nv">
+        <div class="p-card-top">
+          <div class="p-card-label">Quiet Moment</div>
+          <div class="p-card-title">She turns away</div>
+        </div>
+        <button class="p-card-btn">Ask to see it</button>
+        <button class="p-card-btn">Wait quietly</button>
+      </div>
+      <div class="p-card nv">
+        <div class="p-card-top">
+          <div class="p-card-label">Social Cue</div>
+          <div class="p-card-title">Small talk</div>
+        </div>
+        <button class="p-card-btn">Make conversation</button>
+        <button class="p-card-btn">Buy something</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Option B: Noir Luxe -->
+  <div class="palette-card nl" data-choice="b" onclick="toggleSelect(this)">
+    <div class="option-label">
+      <span class="opt-letter">B</span>
+      <span class="opt-name">Noir Luxe</span>
+    </div>
+    <p class="opt-tagline">Dark premium — no neon, just dark gold and cool steel</p>
+    <div class="p-header nl">
+      <span class="p-money">$5,000</span>
+      <span class="p-title">Hermès Claw</span>
+      <span class="p-turn">Turn 3/10</span>
+    </div>
+    <div class="p-dialogue nl">
+      <div class="p-npc-name">Associate · Warm</div>
+      <div class="p-speech">"I have something set aside. For the right client."</div>
+    </div>
+    <div class="p-label">Your move</div>
+    <div class="p-cards nl">
+      <div class="p-card nl">
+        <div class="p-card-top">
+          <div class="p-card-label">Quiet Moment</div>
+          <div class="p-card-title">She turns away</div>
+        </div>
+        <button class="p-card-btn">Ask to see it</button>
+        <button class="p-card-btn">Wait quietly</button>
+      </div>
+      <div class="p-card nl">
+        <div class="p-card-top">
+          <div class="p-card-label">Social Cue</div>
+          <div class="p-card-title">Small talk</div>
+        </div>
+        <button class="p-card-btn">Make conversation</button>
+        <button class="p-card-btn">Buy something</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Option C: Hybrid -->
+  <div class="palette-card hy" data-choice="c" onclick="toggleSelect(this)">
+    <div class="option-label">
+      <span class="opt-letter">C</span>
+      <span class="opt-name">Dark Shell</span>
+    </div>
+    <p class="opt-tagline">Dark chrome, cream cards — Balatro frame, editorial interior</p>
+    <div class="p-header hy">
+      <span class="p-money">$5,000</span>
+      <span class="p-title">Hermès Claw</span>
+      <span class="p-turn">Turn 3/10</span>
+    </div>
+    <div class="p-dialogue hy">
+      <div class="p-npc-name">Associate · Warm</div>
+      <div class="p-speech">"I have something set aside. For the right client."</div>
+    </div>
+    <div class="p-label">Your move</div>
+    <div class="p-cards hy">
+      <div class="p-card hy">
+        <div class="p-card-top">
+          <div class="p-card-label">Quiet Moment</div>
+          <div class="p-card-title">She turns away</div>
+        </div>
+        <button class="p-card-btn">Ask to see it</button>
+        <button class="p-card-btn">Wait quietly</button>
+      </div>
+      <div class="p-card hy">
+        <div class="p-card-top">
+          <div class="p-card-label">Social Cue</div>
+          <div class="p-card-title">Small talk</div>
+        </div>
+        <button class="p-card-btn">Make conversation</button>
+        <button class="p-card-btn">Buy something</button>
+      </div>
+    </div>
+  </div>
+
+</div>

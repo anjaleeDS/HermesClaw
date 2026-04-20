@@ -1,0 +1,207 @@
+<h2>Intro & End Screen Treatment</h2>
+<p class="subtitle">How theatrical should the full-screen moments feel?</p>
+
+<style>
+  .row {
+    display: flex;
+    gap: 20px;
+    margin-top: 24px;
+    flex-wrap: wrap;
+    align-items: flex-start;
+  }
+
+  .option-wrap {
+    flex: 1;
+    min-width: 230px;
+    border-radius: 10px;
+    overflow: hidden;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: border-color 0.2s, transform 0.15s;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.5);
+  }
+  .option-wrap:hover { transform: translateY(-2px); }
+  .option-wrap.selected { border-color: #fff !important; }
+  .opt-meta { padding: 10px 14px 6px; display: flex; justify-content: space-between; align-items: baseline; }
+  .opt-letter { font-size: 20px; font-weight: bold; color: #c8c0e8; }
+  .opt-name { font-size: 12px; font-weight: bold; color: #c8c0e8; }
+  .opt-tagline { font-size: 10px; color: #6666aa; padding: 0 14px 10px; }
+
+  /* ── A: Cohesive panel (cream panel on dark bg) ── */
+  .wrap-a { background: #16132a; }
+  .screen-a {
+    background: #1c1830;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 280px;
+  }
+  .panel-a {
+    background: #f5f0e8;
+    border: 1px solid #ddd4c0;
+    padding: 28px 30px;
+    max-width: 260px;
+    width: 100%;
+    text-align: center;
+  }
+  .pa-eyebrow { font-size: 9px; letter-spacing: 0.3em; text-transform: uppercase; color: #6b6b6b; margin-bottom: 12px; }
+  .pa-title { font-size: 36px; font-weight: 300; color: #1a1a1a; line-height: 1; margin-bottom: 14px; letter-spacing: -0.01em; }
+  .pa-premise { font-size: 13px; font-style: italic; color: #6b6b6b; font-weight: 300; line-height: 1.5; margin-bottom: 20px; border-left: 2px solid #ddd4c0; padding-left: 12px; text-align: left; }
+  .pa-btn { background: #1a1a1a; color: #f5f0e8; border: none; padding: 11px 32px; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; cursor: pointer; width: 100%; }
+
+  /* ── B: Fully dark, immersive ── */
+  .wrap-b { background: #16132a; }
+  .screen-b {
+    background: #1c1830;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 280px;
+  }
+  .panel-b {
+    max-width: 260px;
+    width: 100%;
+    text-align: center;
+  }
+  .pb-eyebrow { font-size: 9px; letter-spacing: 0.3em; text-transform: uppercase; color: #6666aa; margin-bottom: 14px; }
+  .pb-title { font-size: 44px; font-weight: 300; color: #f0eadc; line-height: 1; margin-bottom: 6px; letter-spacing: -0.02em; }
+  .pb-subtitle { font-size: 10px; letter-spacing: 0.25em; text-transform: uppercase; color: #D4AF6A; margin-bottom: 18px; }
+  .pb-premise { font-size: 13px; font-style: italic; color: #9090c0; font-weight: 300; line-height: 1.55; margin-bottom: 24px; border-left: 2px solid #3a3660; padding-left: 12px; text-align: left; }
+  .pb-btn { background: #D4AF6A; color: #0e0c1a; border: none; padding: 11px 32px; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; cursor: pointer; width: 100%; font-weight: 600; }
+
+  /* ── C: Dark with oversized decorative element ── */
+  .wrap-c { background: #16132a; }
+  .screen-c {
+    background: #1c1830;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 280px;
+    position: relative;
+    overflow: hidden;
+  }
+  .screen-c::before {
+    content: 'H';
+    position: absolute;
+    font-size: 240px;
+    font-weight: 300;
+    color: rgba(212,175,106,0.06);
+    line-height: 1;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    letter-spacing: -0.05em;
+  }
+  .panel-c {
+    max-width: 260px;
+    width: 100%;
+    text-align: center;
+    position: relative;
+    z-index: 1;
+  }
+  .pc-eyebrow { font-size: 9px; letter-spacing: 0.3em; text-transform: uppercase; color: #6666aa; margin-bottom: 14px; }
+  .pc-title { font-size: 42px; font-weight: 300; color: #f0eadc; line-height: 1; margin-bottom: 6px; letter-spacing: -0.02em; }
+  .pc-subtitle { font-size: 10px; letter-spacing: 0.25em; text-transform: uppercase; color: #D4AF6A; margin-bottom: 18px; }
+  .pc-premise { font-size: 13px; font-style: italic; color: #9090c0; font-weight: 300; line-height: 1.55; margin-bottom: 24px; border-left: 2px solid #3a3660; padding-left: 12px; text-align: left; }
+  .pc-btn { background: none; color: #f0eadc; border: 1px solid #4a4680; padding: 11px 32px; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; cursor: pointer; width: 100%; transition: border-color 0.2s, background 0.2s; }
+  .pc-btn:hover { border-color: #D4AF6A; background: rgba(212,175,106,0.08); }
+
+  /* end screen preview */
+  .end-preview {
+    margin-top: 10px;
+    border-top: 1px solid #2e2a48;
+    padding: 12px 0 0;
+    text-align: center;
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: #6666aa;
+    margin-left: 20px;
+    margin-right: 20px;
+    margin-bottom: 14px;
+  }
+
+  .score-a { font-size: 52px; font-weight: 300; color: #1a1a1a; }
+  .score-b { font-size: 58px; font-weight: 300; color: #f0eadc; text-shadow: 0 0 30px rgba(212,175,106,0.4); }
+  .score-c { font-size: 56px; font-weight: 300; color: #D4AF6A; }
+  .verdict-a { font-size: 12px; font-style: italic; color: #6b6b6b; }
+  .verdict-b { font-size: 12px; font-style: italic; color: #9090c0; }
+  .verdict-c { font-size: 12px; font-style: italic; color: #9090c0; }
+
+  .panel-a-end { background: #f5f0e8; border: 1px solid #ddd4c0; padding: 16px 24px; max-width: 260px; margin: 0 auto; }
+  .panel-b-end { max-width: 260px; margin: 0 auto; }
+  .panel-c-end { max-width: 260px; margin: 0 auto; position: relative; z-index: 1; }
+</style>
+
+<div class="row">
+
+  <!-- A: Cohesive panel -->
+  <div class="option-wrap wrap-a" data-choice="a" onclick="toggleSelect(this)">
+    <div class="opt-meta"><span class="opt-letter">A</span><span class="opt-name">Cohesive Panel</span></div>
+    <p class="opt-tagline">Cream panel on dark bg. Consistent with game cards.</p>
+    <div class="screen-a">
+      <div class="panel-a">
+        <div class="pa-eyebrow">A Hermès Fable</div>
+        <div class="pa-title">Hermès Claw</div>
+        <div class="pa-premise">"Ten visits. One chance. She decides everything."</div>
+        <button class="pa-btn">Enter the Boutique</button>
+      </div>
+    </div>
+    <div class="end-preview">End screen score</div>
+    <div class="screen-a" style="min-height:120px">
+      <div class="panel-a-end">
+        <div class="score-a">8,400</div>
+        <div class="verdict-a">"You understood the game."</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- B: Fully dark -->
+  <div class="option-wrap wrap-b" data-choice="b" onclick="toggleSelect(this)">
+    <div class="opt-meta"><span class="opt-letter">B</span><span class="opt-name">Full Dark</span></div>
+    <p class="opt-tagline">No panel. Everything lives on the dark bg directly.</p>
+    <div class="screen-b">
+      <div class="panel-b">
+        <div class="pb-eyebrow">A Hermès Fable</div>
+        <div class="pb-title">Hermès<br>Claw</div>
+        <div class="pb-subtitle">Chapter I — The Constance</div>
+        <div class="pb-premise">"Ten visits. One chance. She decides everything."</div>
+        <button class="pb-btn">Enter the Boutique</button>
+      </div>
+    </div>
+    <div class="end-preview">End screen score</div>
+    <div class="screen-b" style="min-height:120px">
+      <div class="panel-b-end">
+        <div class="score-b">8,400</div>
+        <div class="verdict-b">"You understood the game."</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- C: Dark with ghost H -->
+  <div class="option-wrap wrap-c" data-choice="c" onclick="toggleSelect(this)">
+    <div class="opt-meta"><span class="opt-letter">C</span><span class="opt-name">Dark + Ghost H</span></div>
+    <p class="opt-tagline">Dark bg with faint oversized H behind the content.</p>
+    <div class="screen-c">
+      <div class="panel-c">
+        <div class="pc-eyebrow">A Hermès Fable</div>
+        <div class="pc-title">Hermès<br>Claw</div>
+        <div class="pc-subtitle">Chapter I — The Constance</div>
+        <div class="pc-premise">"Ten visits. One chance. She decides everything."</div>
+        <button class="pc-btn">Enter the Boutique</button>
+      </div>
+    </div>
+    <div class="end-preview">End screen score</div>
+    <div class="screen-c" style="min-height:120px">
+      <div class="panel-c-end">
+        <div class="score-c">8,400</div>
+        <div class="verdict-c">"You understood the game."</div>
+      </div>
+    </div>
+  </div>
+
+</div>

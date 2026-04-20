@@ -25,7 +25,7 @@ Over 10 turns, manage your relationship with the Associate well enough that she 
 | Card | What it is |
 |------|------------|
 | Boutique Visit | Spend money. Buy something. Or don't. |
-| The Associate | Talk to her. How you talk matters. |
+| The Associate | Talk to her. How you talk matters. Discuss an outfit. Ask about a bag. |
 | Do Nothing | Wait. Patience is its own currency. |
 | A Quiet Opportunity | Something rare became available. Your call. |
 | Secondary Market | A discreet offer. Think carefully. |
@@ -51,7 +51,7 @@ Each chapter also has a smaller, rarer variant. It won't appear just because you
 
 ## Accessories
 
-Buying smaller items along the way — a Twilly, shoes, a bracelet — isn't just spending. Each piece quietly changes the dynamic. How, exactly, is something you discover.
+Buying smaller items along the way — a Twilly, a Carré H scarf, shoes, a bracelet — isn't just spending. Each piece quietly changes the dynamic. How, exactly, is something you discover.
 
 The everyday bags (Evelyne, Picotin, Garden Party, and others) are offered when the moment is right. They're not the goal. But they're not nothing, either.
 

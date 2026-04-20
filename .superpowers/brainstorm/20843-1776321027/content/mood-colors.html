@@ -1,0 +1,223 @@
+<h2>NPC Mood Colors</h2>
+<p class="subtitle">Three mood states — warm, neutral, cold — on the Midnight background. Each row is one palette.</p>
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;1,400&display=swap');
+
+  .grid {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin-top: 20px;
+  }
+
+  .palette-row {
+    border-radius: 10px;
+    overflow: hidden;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: border-color 0.2s, transform 0.15s;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+    background: #16132a;
+  }
+  .palette-row:hover { transform: translateY(-2px); }
+  .palette-row.selected { border-color: #fff !important; }
+
+  .row-meta {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    padding: 10px 16px 4px;
+  }
+  .row-letter { font-size: 18px; font-weight: bold; color: #c8c0e8; }
+  .row-name { font-size: 12px; font-weight: bold; color: #c8c0e8; }
+  .row-tagline { font-size: 10px; color: #6666aa; }
+  .row-note { font-size: 10px; color: #6666aa; padding: 0 16px 10px; }
+
+  .moods {
+    display: flex;
+    gap: 10px;
+    padding: 0 14px 14px;
+    background: #1c1830;
+    border-top: 1px solid #2e2a48;
+  }
+
+  .mood-box {
+    flex: 1;
+    background: #f5f0e8;
+    border: 1px solid #ddd4c0;
+    border-left-width: 4px;
+    padding: 10px 12px;
+    font-family: 'Playfair Display', Georgia, serif;
+  }
+  .mood-label-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 7px;
+  }
+  .mood-name {
+    font-size: 9px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: #3a3a3a;
+    font-family: monospace;
+  }
+  .mood-tag {
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 2px 7px;
+    border-width: 1px;
+    border-style: solid;
+    font-family: monospace;
+  }
+  .mood-speech {
+    font-size: 13px;
+    font-style: italic;
+    color: #1a1a1a;
+    line-height: 1.45;
+  }
+  .mood-state-label {
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: #6666aa;
+    padding: 8px 14px 4px;
+    background: #1c1830;
+    font-family: monospace;
+    display: flex;
+    gap: 0;
+  }
+  .mood-state-label span { flex: 1; text-align: center; }
+
+  /* ── Palette A: Orange / Steel / Crimson ── */
+  .a-warm  { border-left-color: #e8601c; }
+  .a-warm  .mood-tag { border-color: #e8601c; color: #c04a10; }
+  .a-neut  { border-left-color: #8888aa; }
+  .a-neut  .mood-tag { border-color: #8888aa; color: #8888aa; }
+  .a-cold  { border-left-color: #c0392b; }
+  .a-cold  .mood-tag { border-color: #c0392b; color: #a02820; }
+
+  /* ── Palette B: Orange / Teal / Cold Blue ── */
+  .b-warm  { border-left-color: #e8601c; }
+  .b-warm  .mood-tag { border-color: #e8601c; color: #c04a10; }
+  .b-neut  { border-left-color: #4eada8; }
+  .b-neut  .mood-tag { border-color: #4eada8; color: #3a8a86; }
+  .b-cold  { border-left-color: #5b7faa; }
+  .b-cold  .mood-tag { border-color: #5b7faa; color: #4a6a90; }
+
+  /* ── Palette C: Orange / Gold / Deep Red ── */
+  .c-warm  { border-left-color: #e8601c; }
+  .c-warm  .mood-tag { border-color: #e8601c; color: #c04a10; }
+  .c-neut  { border-left-color: #D4AF6A; }
+  .c-neut  .mood-tag { border-color: #D4AF6A; color: #a88840; }
+  .c-cold  { border-left-color: #8b2e2e; }
+  .c-cold  .mood-tag { border-color: #8b2e2e; color: #7a2020; }
+</style>
+
+<div class="grid">
+
+  <!-- A -->
+  <div class="palette-row" data-choice="a" onclick="toggleSelect(this)">
+    <div class="row-meta">
+      <span class="row-letter">A</span>
+      <span class="row-name">Orange / Steel / Crimson</span>
+      <span class="row-tagline">Warm = Hermès orange. Neutral = cool steel. Cold = bright red.</span>
+    </div>
+    <p class="row-note">Maximum differentiation. Neutral shifts cool so warm and cold never feel similar.</p>
+    <div class="mood-state-label"><span>Warm</span><span>Neutral</span><span>Cold</span></div>
+    <div class="moods">
+      <div class="mood-box a-warm">
+        <div class="mood-label-row">
+          <span class="mood-name">Associate</span>
+          <span class="mood-tag">Warm</span>
+        </div>
+        <div class="mood-speech">"I had a feeling you'd be in today."</div>
+      </div>
+      <div class="mood-box a-neut">
+        <div class="mood-label-row">
+          <span class="mood-name">Associate</span>
+          <span class="mood-tag">Neutral</span>
+        </div>
+        <div class="mood-speech">"Good afternoon. Welcome."</div>
+      </div>
+      <div class="mood-box a-cold">
+        <div class="mood-label-row">
+          <span class="mood-name">Associate</span>
+          <span class="mood-tag">Cold</span>
+        </div>
+        <div class="mood-speech">"We're quite busy at the moment."</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- B -->
+  <div class="palette-row" data-choice="b" onclick="toggleSelect(this)">
+    <div class="row-meta">
+      <span class="row-letter">B</span>
+      <span class="row-name">Orange / Teal / Blue</span>
+      <span class="row-tagline">Warm = orange. Neutral = teal. Cold = steel blue.</span>
+    </div>
+    <p class="row-note">Unexpected but distinctive. Teal and blue feel cool/detached; orange pops as favor.</p>
+    <div class="mood-state-label"><span>Warm</span><span>Neutral</span><span>Cold</span></div>
+    <div class="moods">
+      <div class="mood-box b-warm">
+        <div class="mood-label-row">
+          <span class="mood-name">Associate</span>
+          <span class="mood-tag">Warm</span>
+        </div>
+        <div class="mood-speech">"I had a feeling you'd be in today."</div>
+      </div>
+      <div class="mood-box b-neut">
+        <div class="mood-label-row">
+          <span class="mood-name">Associate</span>
+          <span class="mood-tag">Neutral</span>
+        </div>
+        <div class="mood-speech">"Good afternoon. Welcome."</div>
+      </div>
+      <div class="mood-box b-cold">
+        <div class="mood-label-row">
+          <span class="mood-name">Associate</span>
+          <span class="mood-tag">Cold</span>
+        </div>
+        <div class="mood-speech">"We're quite busy at the moment."</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- C -->
+  <div class="palette-row" data-choice="c" onclick="toggleSelect(this)">
+    <div class="row-meta">
+      <span class="row-letter">C</span>
+      <span class="row-name">Orange / Gold / Dark Red</span>
+      <span class="row-tagline">Warm = orange. Neutral = gold. Cold = deep wine red.</span>
+    </div>
+    <p class="row-note">Stays warmest — all Hermès tones. Neutral and warm are close but that's how the boutique feels.</p>
+    <div class="mood-state-label"><span>Warm</span><span>Neutral</span><span>Cold</span></div>
+    <div class="moods">
+      <div class="mood-box c-warm">
+        <div class="mood-label-row">
+          <span class="mood-name">Associate</span>
+          <span class="mood-tag">Warm</span>
+        </div>
+        <div class="mood-speech">"I had a feeling you'd be in today."</div>
+      </div>
+      <div class="mood-box c-neut">
+        <div class="mood-label-row">
+          <span class="mood-name">Associate</span>
+          <span class="mood-tag">Neutral</span>
+        </div>
+        <div class="mood-speech">"Good afternoon. Welcome."</div>
+      </div>
+      <div class="mood-box c-cold">
+        <div class="mood-label-row">
+          <span class="mood-name">Associate</span>
+          <span class="mood-tag">Cold</span>
+        </div>
+        <div class="mood-speech">"We're quite busy at the moment."</div>
+      </div>
+    </div>
+  </div>
+
+</div>
