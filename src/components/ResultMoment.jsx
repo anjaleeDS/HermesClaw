@@ -1,16 +1,21 @@
 // src/components/ResultMoment.jsx
 import { ITEMS } from '../gameData.js';
 import AssociatePortrait from './AssociatePortrait.jsx';
-import BagPhoto from './BagPhoto.jsx';
+import ItemPhoto from './ItemPhoto.jsx';
 
 const NPC_NAMES = { 0: 'The Associate', 1: 'The Associate', 2: 'The Senior Associate' };
 
-// Bag IDs that have a real photo — accessories don't
-const BAG_IDS = new Set(['constance24', 'constanceMini', 'kelly28', 'kelly25', 'birkin30', 'birkin25']);
+// Items that have a photo (sprite-sheet or single). Must match keys in ItemPhoto.jsx.
+const PHOTO_ITEMS = new Set([
+  'constance24', 'constanceMini',
+  'kelly28', 'kelly25',
+  'birkin30', 'birkin25',
+  'twilly', 'bracelet', 'shoes', 'kellyBelt', 'scarfCarre',
+]);
 
 export default function ResultMoment({ message, mood, summary, onContinue, turn, chapter = 0, runCount = 0 }) {
   const { moneyDelta, newItem } = summary ?? {};
-  const isBag = newItem && BAG_IDS.has(newItem);
+  const hasPhoto = newItem && PHOTO_ITEMS.has(newItem);
 
   return (
     <div className="result-moment">
@@ -31,9 +36,9 @@ export default function ResultMoment({ message, mood, summary, onContinue, turn,
         </div>
       </div>
 
-      {isBag && (
+      {hasPhoto && (
         <div className="bag-photo-wrap">
-          <BagPhoto bagId={newItem} colorIndex={runCount} />
+          <ItemPhoto itemId={newItem} colorIndex={runCount} />
           <div className="bag-photo-caption">
             <span className="bag-photo-label">Acquired</span>
             <span className="bag-photo-name">{ITEMS[newItem]?.name}</span>
@@ -48,7 +53,7 @@ export default function ResultMoment({ message, mood, summary, onContinue, turn,
             {moneyDelta > 0 ? '+' : ''}${Math.abs(moneyDelta).toLocaleString()}
           </div>
         )}
-        {newItem && !isBag && (
+        {newItem && !hasPhoto && (
           <div className="result-item-gained">
             <span className="result-item-label">Acquired</span>
             <span className="result-item-name">{ITEMS[newItem]?.name}</span>
