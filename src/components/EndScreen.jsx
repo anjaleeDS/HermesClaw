@@ -1,11 +1,14 @@
 // src/components/EndScreen.jsx
 import { ITEMS } from '../gameData.js';
-import { CHAPTER_NAMES, CHAPTER_TARGETS } from '../persistence.js';
+import { CHAPTER_NAMES, CHAPTER_WIN_BAGS } from '../persistence.js';
+
+function didWin(inventory, chapter) {
+  return (CHAPTER_WIN_BAGS[chapter] ?? []).some(id => inventory.includes(id));
+}
 
 function getNudge(game) {
   const { inventory, lastActions, suspicion, favor, rareChanceBonus, chapter } = game;
-  const targetBag     = CHAPTER_TARGETS[chapter];
-  const won           = inventory.includes(targetBag);
+  const won           = didWin(inventory, chapter);
   const neverBought   = !lastActions.includes('buy');
   const flipped       = lastActions.includes('flip');
   const highSuspicion = suspicion >= 5;
@@ -30,8 +33,7 @@ function getNudge(game) {
 }
 
 export default function EndScreen({ game, score, profile, onRestart }) {
-  const targetBag   = CHAPTER_TARGETS[game.chapter ?? 0];
-  const won         = game.inventory.includes(targetBag);
+  const won         = didWin(game.inventory, game.chapter ?? 0);
   const nudge       = getNudge(game);
   const nextChapter = won && (game.chapter ?? 0) < 2 ? (game.chapter ?? 0) + 1 : null;
 
