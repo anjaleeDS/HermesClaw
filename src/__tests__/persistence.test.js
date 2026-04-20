@@ -183,4 +183,23 @@ describe('V2 — three-path chapter continuity', () => {
     expect(updated.chapter).toBe(2);
     vi.restoreAllMocks();
   });
+
+  it('path B: only 1 accessory does not advance (boundary)', () => {
+    vi.spyOn(Math, 'random').mockReturnValue(0.5); // path B
+    const profile = createMockProfile({ chapter: 0, standing: 0, progress: 0 });
+    const gameState = createMockState({ chapter: 0, inventory: ['twilly'], favor: 8 });
+    const updated = updateProfileAfterRun(profile, gameState, 200);
+    expect(updated.chapter).toBe(0);
+    vi.restoreAllMocks();
+  });
+
+  it('path C: chapter 1 → 2 advances at threshold 5', () => {
+    vi.spyOn(Math, 'random').mockReturnValue(0.9); // path C
+    const profile = createMockProfile({ chapter: 1, standing: 0, progress: 4 });
+    // progress 4 + everyday bag bonus 1 = 5, threshold ch1→ch2 is 5
+    const gameState = createMockState({ chapter: 1, inventory: ['picotin18'], favor: 3 });
+    const updated = updateProfileAfterRun(profile, gameState, 200);
+    expect(updated.chapter).toBe(2);
+    vi.restoreAllMocks();
+  });
 });

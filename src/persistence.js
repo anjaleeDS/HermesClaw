@@ -58,13 +58,16 @@ export function updateProfileAfterRun(profile, gameState, score) {
   if (!won && profile.chapter < 2) {
     const pathRoll = Math.random();
 
-    if (pathRoll < 0.33) {
-      // Path A — Relationship Carry: standing accumulates from favor, decays 10% per run
+    if (pathRoll < 1/3) {
+      // Path A — Relationship Carry: on a Path A run, standing decays ~10% then gains from favor.
+      // Decay is path-gated (only ~33% of runs), so standing erodes slowly.
+      // Advancement check is on the POST-decay value — standing must reach 12 after decay
+      // (requires ~14 banked with favor=0, or 12 with favor>=2).
       newStanding = Math.round(newStanding * 0.9) + Math.floor(favor / 2);
       newStanding = Math.min(30, newStanding);
       if (newStanding >= 12) pathAdvanced = true;
 
-    } else if (pathRoll < 0.66) {
+    } else if (pathRoll < 2/3) {
       // Path B — Milestone Unlock: high favor + 2+ accessories
       const accessoriesOwned = inventory.filter(id => ACCESSORY_IDS.includes(id)).length;
       if (favor >= 6 && accessoriesOwned >= 2) pathAdvanced = true;
