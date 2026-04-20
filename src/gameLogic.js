@@ -231,10 +231,12 @@ export function resolveAction(state, cardId, action) {
   const committedClientBonus = allFour ? 0.10 : 0;
 
   let isSocialAction = false;
+  let isBuyAction = false;
 
   switch (action) {
 
     case 'buySmall': {
+      isBuyAction = true;
       if (s.money < 500) {
         message = 'Your card was declined. Discreetly.';
         s.suspicion = Math.min(10, s.suspicion + 1);
@@ -251,6 +253,7 @@ export function resolveAction(state, cardId, action) {
     }
 
     case 'buyMedium': {
+      isBuyAction = true;
       if (s.money < 1500) {
         message = 'Your card was declined. Discreetly.';
         s.suspicion = Math.min(10, s.suspicion + 1);
@@ -467,8 +470,9 @@ export function resolveAction(state, cardId, action) {
     message = pickDialogue('itemSynergy', s.npcMood);
   }
 
-  // suspicionBuilding: suspicion at 3–4 (not yet full cold)
-  if (s.suspicion >= 3 && s.suspicion <= 4) {
+  // suspicionBuilding: suspicion at 3–4, but not when player just made a purchase
+  // (buy actions have their own dedicated dialogue pools that should not be overridden)
+  if (s.suspicion >= 3 && s.suspicion <= 4 && !isBuyAction) {
     message = pickDialogue('suspicionBuilding', s.npcMood);
   }
 
