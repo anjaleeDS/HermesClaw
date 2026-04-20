@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { ITEMS, NPC_DIALOGUE } from '../gameData.js';
+import { ITEMS, NPC_DIALOGUE, CARD_TEMPLATES } from '../gameData.js';
 import { CHAPTER_TARGETS } from '../persistence.js';
 
 describe('ITEMS Data Structure', () => {
@@ -113,6 +113,44 @@ describe('Item Distribution', () => {
     miniBags.forEach(id => {
       expect(ITEMS[id]).toBeDefined();
     });
+  });
+});
+
+describe('gameData — scarfCarre item', () => {
+  it('scarfCarre exists in ITEMS', () => {
+    expect(ITEMS.scarfCarre).toBeDefined();
+  });
+
+  it('scarfCarre has required fields', () => {
+    const s = ITEMS.scarfCarre;
+    expect(s.id).toBe('scarfCarre');
+    expect(s.name).toBe('Carré H');
+    expect(typeof s.score).toBe('number');
+    expect(s.effect).toBe('wardrobeDepth');
+  });
+});
+
+describe('gameData — new dialogue pools', () => {
+  const REQUIRED_POOLS = [
+    'afterBuySmall', 'afterBuyMedium', 'outfitChat',
+    'complimentReturn', 'suspicionBuilding', 'itemSynergy',
+    'chapterAware_ch1', 'chapterAware_ch2',
+  ];
+
+  REQUIRED_POOLS.forEach(pool => {
+    it(`NPC_DIALOGUE has pool: ${pool}`, () => {
+      expect(NPC_DIALOGUE[pool]).toBeDefined();
+      expect(Array.isArray(NPC_DIALOGUE[pool])).toBe(true);
+      expect(NPC_DIALOGUE[pool].length).toBeGreaterThan(0);
+    });
+  });
+});
+
+describe('gameData — talkToAssociate card has outfitChat option', () => {
+  it('talkToAssociate card includes outfitChat action', () => {
+    const card = CARD_TEMPLATES.find(c => c.id === 'talkToAssociate');
+    const actions = card.options.map(o => o.action);
+    expect(actions).toContain('outfitChat');
   });
 });
 
