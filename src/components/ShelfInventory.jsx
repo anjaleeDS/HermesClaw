@@ -105,6 +105,30 @@ function KellyBeltIcon() {
   );
 }
 
+function ScarfCarreIcon() {
+  // Classic 90cm square silk scarf — folded diagonally, bold print border
+  return (
+    <svg width="52" height="52" viewBox="0 0 52 52" fill="none">
+      {/* Main square scarf body */}
+      <rect x="8" y="8" width="36" height="36" rx="1"
+            fill="#e8601c" stroke="#1a1a1a" strokeWidth="2" />
+      {/* Border pattern — inner frame */}
+      <rect x="12" y="12" width="28" height="28" rx="0.5"
+            fill="none" stroke="#1a1a1a" strokeWidth="1.2" />
+      {/* Print motif — central diamond */}
+      <path d="M26 14 L38 26 L26 38 L14 26 Z"
+            fill="#f5f0e8" stroke="#1a1a1a" strokeWidth="1" />
+      {/* Inner detail */}
+      <circle cx="26" cy="26" r="4" fill="#e8601c" stroke="#1a1a1a" strokeWidth="1" />
+      {/* Corner accents */}
+      <circle cx="14" cy="14" r="1.5" fill="#1a1a1a" opacity="0.4" />
+      <circle cx="38" cy="14" r="1.5" fill="#1a1a1a" opacity="0.4" />
+      <circle cx="14" cy="38" r="1.5" fill="#1a1a1a" opacity="0.4" />
+      <circle cx="38" cy="38" r="1.5" fill="#1a1a1a" opacity="0.4" />
+    </svg>
+  );
+}
+
 function BirkinIcon() {
   // THE Birkin — iconic trapezoid silhouette, twin handles, gold turnlock
   return (
@@ -300,6 +324,7 @@ const SHELF_ITEMS = [
   { id: 'bracelet',      Icon: BraceletIcon,  label: 'Bracelet',       bg: '#fdf9f0' },
   { id: 'shoes',         Icon: ShoesIcon,     label: 'Shoes',          bg: '#f8f7f5' },
   { id: 'kellyBelt',     Icon: KellyBeltIcon, label: 'Kelly Belt',     bg: '#fdf9f0' },
+  { id: 'scarfCarre',    Icon: ScarfCarreIcon, label: 'Carré H',       bg: '#fff8f3' },
   // Everyday bags (SA-offered)
   { id: 'evelyneTpm',    Icon: EvelyneIcon,      label: 'Evelyne TPM',       bg: '#fdf6e8' },
   { id: 'picotin18',     Icon: PicotinIcon,      label: 'Picotin 18',        bg: '#fdf6e0' },
@@ -323,11 +348,18 @@ const SHELF_ITEMS = [
 // ─────────────────────────────────────────────
 
 export default function ShelfInventory({ inventory, lastAcquired }) {
+  // Build a lookup map from SHELF_ITEMS for icon/label/bg data
+  const itemConfig = Object.fromEntries(SHELF_ITEMS.map(item => [item.id, item]));
+
+  // Only render items the player actually owns, in acquisition order
+  const ownedItems = inventory
+    .map(id => itemConfig[id])
+    .filter(Boolean); // filter out ids with no config (everyday bags without icons)
+
   return (
     <div className="shelf-wrapper">
       <div className="shelf-label">Your Acquisitions</div>
 
-      {/* The shelf surface */}
       <div className="shelf-surface">
         {/* Shelf plank SVG background */}
         <svg className="shelf-plank" viewBox="0 0 100 8" preserveAspectRatio="none">
@@ -336,40 +368,31 @@ export default function ShelfInventory({ inventory, lastAcquired }) {
           <line x1="0" y1="6" x2="100" y2="6" stroke="#1e1a30" strokeWidth="0.5" />
         </svg>
 
-        {/* Item slots */}
         <div className="shelf-items">
-          {SHELF_ITEMS.map((item) => {
-            const { id, Icon, label, bg } = item;
-            const owned   = inventory.includes(id);
-            const isNew   = id === lastAcquired;
-            return (
-              <div
-                key={id}
-                className={`shelf-slot${owned ? ' shelf-slot--owned' : ' shelf-slot--empty'}${isNew ? ' shelf-slot--new' : ''}`}
-                style={owned ? { background: bg } : {}}
-                title={owned ? label : ''}
-              >
-                {owned ? (
-                  <>
-                    <div className="shelf-item-icon" style={item.mini ? { transform: 'scale(0.75)' } : {}}>
-                      <Icon />
-                    </div>
-                    <div className="shelf-item-label">
-                      {label}
-                      {item.mini && <span className="shelf-item-mini-tag">mini</span>}
-                    </div>
-                  </>
-                ) : (
-                  <div className="shelf-slot-empty-icon">
-                    <svg width="20" height="20" viewBox="0 0 20 20">
-                      <rect x="3" y="3" width="14" height="14" rx="2"
-                            stroke="#d4cfc6" strokeWidth="1.5" fill="none" strokeDasharray="3 2" />
-                    </svg>
+          {ownedItems.length === 0 ? (
+            <div className="shelf-empty-state">Nothing yet. That changes.</div>
+          ) : (
+            ownedItems.map((item) => {
+              const { id, Icon, label, bg } = item;
+              const isNew = id === lastAcquired;
+              return (
+                <div
+                  key={id}
+                  className={`shelf-slot shelf-slot--owned${isNew ? ' shelf-slot--new' : ''}`}
+                  style={{ background: bg }}
+                  title={label}
+                >
+                  <div className="shelf-item-icon" style={item.mini ? { transform: 'scale(0.75)' } : {}}>
+                    <Icon />
                   </div>
-                )}
-              </div>
-            );
-          })}
+                  <div className="shelf-item-label">
+                    {label}
+                    {item.mini && <span className="shelf-item-mini-tag">mini</span>}
+                  </div>
+                </div>
+              );
+            })
+          )}
         </div>
       </div>
     </div>

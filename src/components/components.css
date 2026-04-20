@@ -371,6 +371,15 @@
   padding-bottom: 12px;
 }
 
+.shelf-empty-state {
+  padding: 1.2rem 1.5rem;
+  font-size: 0.78rem;
+  color: var(--cream);
+  opacity: 0.4;
+  font-style: italic;
+  letter-spacing: 0.03em;
+}
+
 .shelf-slot {
   flex: 1;
   max-width: 80px;
