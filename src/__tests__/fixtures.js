@@ -14,6 +14,8 @@ export function createMockProfile(overrides = {}) {
     totalWins: 0,
     everFlipped: false,
     askedEarlyCount: 0,
+    standing: 0,
+    progress: 0,
     ...overrides,
   };
 }
