@@ -24,6 +24,7 @@ describe('ITEMS Data Structure', () => {
     expect(ITEMS['bracelet'].score).toBe(100);
     expect(ITEMS['shoes'].score).toBe(75);
     expect(ITEMS['kellyBelt'].score).toBe(200);
+    expect(ITEMS['scarfCarre'].score).toBe(125);
   });
 
   it('chapter target bags have distinct high scores', () => {
