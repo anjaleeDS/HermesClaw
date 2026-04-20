@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
-import { updateProfileAfterRun, DEFAULT_PROFILE, CHAPTER_TARGETS } from '../persistence.js';
+import { updateProfileAfterRun, DEFAULT_PROFILE, CHAPTER_TARGETS, CHAPTER_WIN_BAGS } from '../persistence.js';
 import { createMockState, createMockProfile, withInventory } from './fixtures.js';
 
 describe('Profile Persistence', () => {
@@ -96,6 +96,51 @@ describe('Profile Persistence', () => {
     expect(retrieved.runCount).toBe(1);
     expect(retrieved.bestScore).toBe(150);
     expect(retrieved.chapter).toBe(0);
+  });
+});
+
+describe('Mini bag win conditions', () => {
+  beforeEach(() => {
+    global.localStorage = {
+      data: {},
+      getItem(key) { return this.data[key] || null; },
+      setItem(key, value) { this.data[key] = value; },
+      removeItem(key) { delete this.data[key]; },
+      clear() { this.data = {}; },
+    };
+  });
+
+  it('constanceMini counts as a win for chapter 0', () => {
+    const profile = createMockProfile({ chapter: 0 });
+    const gameState = createMockState({ chapter: 0, inventory: ['constanceMini'] });
+    const updated = updateProfileAfterRun(profile, gameState, 600);
+    expect(updated.chapter).toBe(1);
+    expect(updated.totalWins).toBe(profile.totalWins + 1);
+  });
+
+  it('kelly25 counts as a win for chapter 1', () => {
+    const profile = createMockProfile({ chapter: 1 });
+    const gameState = createMockState({ chapter: 1, inventory: ['kelly25'] });
+    const updated = updateProfileAfterRun(profile, gameState, 900);
+    expect(updated.chapter).toBe(2);
+    expect(updated.totalWins).toBe(profile.totalWins + 1);
+  });
+
+  it('birkin25 counts as a win for chapter 2', () => {
+    const profile = createMockProfile({ chapter: 2 });
+    const gameState = createMockState({ chapter: 2, inventory: ['birkin25'] });
+    const updated = updateProfileAfterRun(profile, gameState, 1500);
+    expect(updated.chapter).toBe(2); // already at max
+    expect(updated.totalWins).toBe(profile.totalWins + 1);
+  });
+
+  it('CHAPTER_WIN_BAGS includes both regular and mini for each chapter', () => {
+    expect(CHAPTER_WIN_BAGS[0]).toContain('constance24');
+    expect(CHAPTER_WIN_BAGS[0]).toContain('constanceMini');
+    expect(CHAPTER_WIN_BAGS[1]).toContain('kelly28');
+    expect(CHAPTER_WIN_BAGS[1]).toContain('kelly25');
+    expect(CHAPTER_WIN_BAGS[2]).toContain('birkin30');
+    expect(CHAPTER_WIN_BAGS[2]).toContain('birkin25');
   });
 });
 

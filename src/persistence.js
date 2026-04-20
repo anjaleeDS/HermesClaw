@@ -40,8 +40,8 @@ const ACCESSORY_IDS = ['twilly', 'scarfCarre', 'bracelet', 'shoes', 'kellyBelt']
 const EVERYDAY_BAG_IDS = ['evelyneTpm', 'picotin18', 'gardenParty', 'bolide', 'roulis', 'lindy26'];
 
 export function updateProfileAfterRun(profile, gameState, score) {
-  const targetBag  = CHAPTER_TARGETS[profile.chapter];
-  const won        = gameState.inventory.includes(targetBag);
+  const winBags = CHAPTER_WIN_BAGS[profile.chapter] ?? [];
+  const won     = winBags.some(id => gameState.inventory.includes(id));
   const flipped    = gameState.hasFlipped;
   const askedEarly = gameState.lastActions.slice(0, 2).includes('ask');
   const favor      = gameState.favor ?? 0;
@@ -99,11 +99,18 @@ export function updateProfileAfterRun(profile, gameState, score) {
   };
 }
 
-// Regular-size bag win condition per chapter
+// Primary (regular) win bag per chapter — used for display / legacy references
 export const CHAPTER_TARGETS = {
   0: 'constance24',
   1: 'kelly28',
   2: 'birkin30',
+};
+
+// All bags that count as a win for each chapter (regular + mini variants)
+export const CHAPTER_WIN_BAGS = {
+  0: ['constance24', 'constanceMini'],
+  1: ['kelly28', 'kelly25'],
+  2: ['birkin30', 'birkin25'],
 };
 
 // Chapter display names (shown in header + end screen)
