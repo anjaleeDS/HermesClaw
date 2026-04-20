@@ -54,3 +54,11 @@ export function withMoney(amount = 3000) {
 export function withComboBonus(rareChanceBonus = 0.5) {
   return createMockState({ rareChanceBonus });
 }
+
+export function chapter1State() {
+  return createMockState({ chapter: 1, favor: 1 });
+}
+
+export function withScarfCarre() {
+  return createMockState({ inventory: ['scarfCarre'] });
+}

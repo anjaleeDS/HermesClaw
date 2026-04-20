@@ -10,7 +10,7 @@ export function createInitialState(playerProfile = null) {
   return {
     phase: 'intro',          // 'intro' | 'playing' | 'result' | 'end'
     turn: 1,                 // 1–10
-    money: 5000,
+    money: 10000,
     inventory: [],           // array of item ids
     lastActions: [],         // rolling last 3 action strings
     hasAsked: false,         // true once player asks this run (prevents re-ask)
@@ -23,6 +23,7 @@ export function createInitialState(playerProfile = null) {
     pendingCards: [],        // next turn's cards, ready after result phase
     currentOffer: null,      // everyday bag id offered this turn (for saOffer card)
     pendingOffer: null,      // everyday bag id for next turn's saOffer
+    saOfferCount: 0,         // tracks SA everyday offers shown this run
     lastNPCMessage: '',
     actionSummary: null,     // { moneyDelta, newItem } — visible feedback
     chapter: profile.chapter,    // 0=Constance, 1=Kelly, 2=Birkin
@@ -39,8 +40,8 @@ export function startGame(state) {
 
   // Wire opening dialogue to returning player pools
   function getOpeningPool(runCount, chapter) {
-    if (chapter === 2) return 'postKelly';
-    if (chapter === 1) return 'postConstance';
+    if (chapter === 2) return 'chapterAware_ch2';
+    if (chapter === 1) return 'chapterAware_ch1';
     if (runCount >= 5) return 'loyalClient';
     if (runCount >= 1) return 'returningClient';
     return null; // first ever visit
@@ -73,8 +74,10 @@ export function advanceTurn(state) {
 // ─────────────────────────────────────────────
 
 export function generateCards(state) {
-  // Pick a random unowned everyday bag to potentially offer this turn
-  const unownedEveryday = EVERYDAY_BAGS.filter(id => !state.inventory.includes(id));
+  // Cap SA everyday offers at 3 per run
+  const unownedEveryday = (state.saOfferCount ?? 0) >= 3
+    ? []
+    : EVERYDAY_BAGS.filter(id => !state.inventory.includes(id));
   const offerItemId = unownedEveryday.length > 0
     ? unownedEveryday[Math.floor(Math.random() * unownedEveryday.length)]
     : null;
@@ -227,6 +230,8 @@ export function resolveAction(state, cardId, action) {
   const allFour = hasTwilly && hasBracelet && hasShoes && hasKellyBelt;
   const committedClientBonus = allFour ? 0.10 : 0;
 
+  let isSocialAction = false;
+
   switch (action) {
 
     case 'buySmall': {
@@ -238,10 +243,10 @@ export function resolveAction(state, cardId, action) {
       s.money -= 500;
       s.favor = Math.min(10, s.favor + 1 + reputationBonus);
       if (hasShoes) s.suspicion = Math.max(0, s.suspicion - 1);
-      const smallItems = ['twilly', 'bracelet'].filter(i => !s.inventory.includes(i));
+      const smallItems = ['twilly', 'scarfCarre', 'bracelet'].filter(i => !s.inventory.includes(i));
       if (smallItems.length > 0) s.inventory = [...s.inventory, smallItems[0]];
       s.lastActions = appendAction(s.lastActions, 'buy');
-      message = pickDialogue('afterBuy', s.npcMood);
+      message = pickDialogue('afterBuySmall', s.npcMood);
       break;
     }
 
@@ -257,7 +262,7 @@ export function resolveAction(state, cardId, action) {
       const mediumItems = ['shoes', 'kellyBelt'].filter(i => !s.inventory.includes(i));
       if (mediumItems.length > 0) s.inventory = [...s.inventory, mediumItems[0]];
       s.lastActions = appendAction(s.lastActions, 'buy');
-      message = pickDialogue('afterBuy', s.npcMood);
+      message = pickDialogue('afterBuyMedium', s.npcMood);
       break;
     }
 
@@ -306,6 +311,7 @@ export function resolveAction(state, cardId, action) {
     }
 
     case 'chat': {
+      isSocialAction = true;
       // Bracelet = recognized client — chatting means more
       const chatFavorBonus = hasBracelet ? 1 : 0;
       s.favor = Math.min(10, s.favor + 1 + socialBonus + chatFavorBonus);
@@ -315,11 +321,21 @@ export function resolveAction(state, cardId, action) {
     }
 
     case 'compliment': {
-      // Kelly Belt unlocks deeper appreciation
+      isSocialAction = true;
       const complimentBonus = hasKellyBelt ? 2 : 1;
       s.favor = Math.min(10, s.favor + complimentBonus + socialBonus);
-      s.lastActions = appendAction(s.lastActions, 'chat'); // counts as chat for combo
-      message = 'A pause. Then: "How kind of you to notice."';
+      s.lastActions = appendAction(s.lastActions, 'chat');
+      message = pickDialogue('complimentReturn', s.npcMood);
+      break;
+    }
+
+    case 'outfitChat': {
+      isSocialAction = true;
+      const hasScarfCarre = s.inventory.includes('scarfCarre');
+      const outfitBonus = hasScarfCarre ? 2 : 1;
+      s.favor = Math.min(10, s.favor + outfitBonus + socialBonus);
+      s.lastActions = appendAction(s.lastActions, 'chat');
+      message = pickDialogue('outfitChat', s.npcMood);
       break;
     }
 
@@ -418,12 +434,14 @@ export function resolveAction(state, cardId, action) {
       s.favor = Math.min(10, s.favor + 1);
       s.lastActions = appendAction(s.lastActions, 'buy');
       message = `She presents the ${item.name}. "A very good choice."`;
+      s.saOfferCount = (s.saOfferCount ?? 0) + 1;
       break;
     }
 
     case 'saOfferDecline': {
       s.favor = Math.min(10, s.favor + 1);
       s.lastActions = appendAction(s.lastActions, 'wait');
+      s.saOfferCount = (s.saOfferCount ?? 0) + 1;
       message = pickDialogue('saOfferDecline', s.npcMood);
       break;
     }
@@ -442,6 +460,16 @@ export function resolveAction(state, cardId, action) {
   // When a combo fires, the NPC hints — without explaining why
   if (comboFired && s.npcMood !== 'cold') {
     message = pickDialogue('comboHint', s.npcMood);
+  }
+
+  // itemSynergy: owning 2+ items + social action = occasional observation
+  if (s.inventory.length >= 2 && isSocialAction && Math.random() < 0.4 && s.npcMood !== 'cold') {
+    message = pickDialogue('itemSynergy', s.npcMood);
+  }
+
+  // suspicionBuilding: suspicion at 3–4 (not yet full cold)
+  if (s.suspicion >= 3 && s.suspicion <= 4) {
+    message = pickDialogue('suspicionBuilding', s.npcMood);
   }
 
   // High suspicion overrides the message with a pointed observation
