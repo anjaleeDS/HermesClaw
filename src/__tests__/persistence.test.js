@@ -98,3 +98,89 @@ describe('Profile Persistence', () => {
     expect(retrieved.chapter).toBe(0);
   });
 });
+
+describe('V2 — DEFAULT_PROFILE has new fields', () => {
+  it('DEFAULT_PROFILE has standing field', () => {
+    expect(typeof DEFAULT_PROFILE.standing).toBe('number');
+    expect(DEFAULT_PROFILE.standing).toBe(0);
+  });
+
+  it('DEFAULT_PROFILE has progress field', () => {
+    expect(typeof DEFAULT_PROFILE.progress).toBe('number');
+    expect(DEFAULT_PROFILE.progress).toBe(0);
+  });
+});
+
+describe('V2 — three-path chapter continuity', () => {
+  it('direct win always advances chapter regardless of path', () => {
+    vi.spyOn(Math, 'random').mockReturnValue(0.99); // path C
+    const profile = createMockProfile({ chapter: 0, standing: 0, progress: 0 });
+    const gameState = createMockState({ chapter: 0, inventory: ['constance24'], favor: 3 });
+    const updated = updateProfileAfterRun(profile, gameState, 500);
+    expect(updated.chapter).toBe(1);
+    vi.restoreAllMocks();
+  });
+
+  it('path A: high standing advances chapter without win', () => {
+    vi.spyOn(Math, 'random').mockReturnValue(0.1); // rolls path A (0–0.33)
+    const profile = createMockProfile({ chapter: 0, standing: 12, progress: 0 });
+    const gameState = createMockState({ chapter: 0, inventory: [], favor: 8 });
+    const updated = updateProfileAfterRun(profile, gameState, 200);
+    expect(updated.chapter).toBe(1);
+    vi.restoreAllMocks();
+  });
+
+  it('path A: low standing does not advance chapter without win', () => {
+    vi.spyOn(Math, 'random').mockReturnValue(0.1); // path A
+    const profile = createMockProfile({ chapter: 0, standing: 4, progress: 0 });
+    const gameState = createMockState({ chapter: 0, inventory: [], favor: 3 });
+    const updated = updateProfileAfterRun(profile, gameState, 100);
+    expect(updated.chapter).toBe(0);
+    vi.restoreAllMocks();
+  });
+
+  it('path B: high favor + 2 accessories advances chapter without win', () => {
+    vi.spyOn(Math, 'random').mockReturnValue(0.5); // path B (0.33–0.66)
+    const profile = createMockProfile({ chapter: 0, standing: 0, progress: 0 });
+    const gameState = createMockState({
+      chapter: 0,
+      inventory: ['twilly', 'bracelet'],
+      favor: 6,
+    });
+    const updated = updateProfileAfterRun(profile, gameState, 300);
+    expect(updated.chapter).toBe(1);
+    vi.restoreAllMocks();
+  });
+
+  it('path B: insufficient favor does not advance', () => {
+    vi.spyOn(Math, 'random').mockReturnValue(0.5); // path B
+    const profile = createMockProfile({ chapter: 0, standing: 0, progress: 0 });
+    const gameState = createMockState({
+      chapter: 0,
+      inventory: ['twilly', 'bracelet'],
+      favor: 4,
+    });
+    const updated = updateProfileAfterRun(profile, gameState, 200);
+    expect(updated.chapter).toBe(0);
+    vi.restoreAllMocks();
+  });
+
+  it('path C: progress accumulates and advances at threshold', () => {
+    vi.spyOn(Math, 'random').mockReturnValue(0.9); // path C (0.66–1.0)
+    const profile = createMockProfile({ chapter: 0, standing: 0, progress: 2 });
+    // progress 2 + everyday bag bonus 1 = 3, threshold ch0→ch1 is 3
+    const gameState = createMockState({ chapter: 0, inventory: ['evelyneTpm'], favor: 3 });
+    const updated = updateProfileAfterRun(profile, gameState, 200);
+    expect(updated.chapter).toBe(1);
+    vi.restoreAllMocks();
+  });
+
+  it('chapter never advances beyond 2', () => {
+    vi.spyOn(Math, 'random').mockReturnValue(0.1); // path A
+    const profile = createMockProfile({ chapter: 2, standing: 20, progress: 10 });
+    const gameState = createMockState({ chapter: 2, inventory: ['birkin30'], favor: 9 });
+    const updated = updateProfileAfterRun(profile, gameState, 1000);
+    expect(updated.chapter).toBe(2);
+    vi.restoreAllMocks();
+  });
+});

@@ -2,12 +2,14 @@
 const KEY = 'hermes_claw_profile';
 
 export const DEFAULT_PROFILE = {
-  runCount: 0,          // total runs ever started
-  bestScore: 0,         // highest score ever
-  chapter: 0,           // 0=Constance, 1=Kelly, 2=Birkin
-  totalWins: 0,         // times any chapter bag was acquired
-  everFlipped: false,   // did player ever use secondary market (lifetime)
-  askedEarlyCount: 0,   // times asked before turn 3 (lifetime)
+  runCount: 0,
+  bestScore: 0,
+  chapter: 0,
+  totalWins: 0,
+  everFlipped: false,
+  askedEarlyCount: 0,
+  standing: 0,      // Path A: accumulated relationship score (0–30)
+  progress: 0,      // Path C: cumulative bag-acquisition counter
 };
 
 export function loadProfile() {
@@ -28,21 +30,69 @@ export function saveProfile(profile) {
   }
 }
 
+// Chapter thresholds for Path C cumulative progress
+const PATH_C_THRESHOLDS = { 0: 3, 1: 5 };
+
+// Accessory IDs — used by Path B milestone check
+const ACCESSORY_IDS = ['twilly', 'scarfCarre', 'bracelet', 'shoes', 'kellyBelt'];
+
+// Everyday bag IDs — used by Path C progress
+const EVERYDAY_BAG_IDS = ['evelyneTpm', 'picotin18', 'gardenParty', 'bolide', 'roulis', 'lindy26'];
+
 export function updateProfileAfterRun(profile, gameState, score) {
-  // Win = acquiring the regular-size chapter bag (not just mini)
   const targetBag  = CHAPTER_TARGETS[profile.chapter];
   const won        = gameState.inventory.includes(targetBag);
   const flipped    = gameState.hasFlipped;
   const askedEarly = gameState.lastActions.slice(0, 2).includes('ask');
+  const favor      = gameState.favor ?? 0;
+  const inventory  = gameState.inventory ?? [];
+
+  // Direct win always advances chapter — no path roll needed
+  let newChapter = won ? Math.min(2, profile.chapter + 1) : profile.chapter;
+
+  // Three-path system — only applies when player did NOT win directly
+  let newStanding = profile.standing ?? 0;
+  let newProgress = profile.progress ?? 0;
+  let pathAdvanced = false;
+
+  if (!won && profile.chapter < 2) {
+    const pathRoll = Math.random();
+
+    if (pathRoll < 0.33) {
+      // Path A — Relationship Carry: standing accumulates from favor, decays 10% per run
+      newStanding = Math.round(newStanding * 0.9) + Math.floor(favor / 2);
+      newStanding = Math.min(30, newStanding);
+      if (newStanding >= 12) pathAdvanced = true;
+
+    } else if (pathRoll < 0.66) {
+      // Path B — Milestone Unlock: high favor + 2+ accessories
+      const accessoriesOwned = inventory.filter(id => ACCESSORY_IDS.includes(id)).length;
+      if (favor >= 6 && accessoriesOwned >= 2) pathAdvanced = true;
+
+    } else {
+      // Path C — Cumulative Progress: everyday bag acquired adds +1 to progress counter
+      const hasEverydayBag = inventory.some(id => EVERYDAY_BAG_IDS.includes(id));
+      newProgress += hasEverydayBag ? 1 : 0;
+      newProgress = Math.min(20, newProgress);
+      const threshold = PATH_C_THRESHOLDS[profile.chapter];
+      if (threshold !== undefined && newProgress >= threshold) pathAdvanced = true;
+    }
+
+    if (pathAdvanced) {
+      newChapter = Math.min(2, profile.chapter + 1);
+    }
+  }
 
   return {
     ...profile,
     runCount:        profile.runCount + 1,
     bestScore:       Math.max(profile.bestScore, score),
     totalWins:       won ? profile.totalWins + 1 : profile.totalWins,
-    chapter:         won ? Math.min(2, profile.chapter + 1) : profile.chapter,
+    chapter:         newChapter,
     everFlipped:     profile.everFlipped || flipped,
     askedEarlyCount: askedEarly ? profile.askedEarlyCount + 1 : profile.askedEarlyCount,
+    standing:        newStanding,
+    progress:        newProgress,
   };
 }
 
